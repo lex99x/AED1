@@ -1,5 +1,8 @@
 #include <stdio.h>
-#include "pilha.h"
+#include <stdlib.h>
+#include "fila.h"
+
+// Obs.: generalizar fila pro tipo void*
 
 int main(void){
 
