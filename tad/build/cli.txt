@@ -1,1 +1,0 @@
-gcc -c *.c && gcc -o ../build/build *.o && rm *.o && ./../build/build
