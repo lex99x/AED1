@@ -4,9 +4,7 @@
 
 Aluno* init_aluno(void){
 
-    Aluno* aluno = (Aluno*) malloc(sizeof(Aluno));
-
-    return aluno;
+    return (Aluno*) malloc(sizeof(Aluno));
 
 }
 

@@ -1,11 +1,11 @@
 #include <stdio.h>
-#include "list.h"
+#include "lista.h"
 
 int main(void){
 
     List* lst = lst_create();
 
-    int n = 2;
+    int n = 10;
     float k = 3.5;
 
     lst_insert(&lst, &k);
