@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "lista.h"
+#include "list.h"
 
 List* lst_create(void){
 
