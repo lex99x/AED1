@@ -13,7 +13,7 @@ Lista* lista_cria(void);
 
 // Função que insere elemento na lista
 
-void lista_insere(Lista* lista, int num);
+void lista_insere(Lista** lista, int num);
 
 // Função que libera a memória alocada para uma lista
 
