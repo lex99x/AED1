@@ -1,5 +1,3 @@
-#include ../list/lista.h
-
 // TAD: fila
 
 // Tipos estruturados
