@@ -1,6 +1,6 @@
 #include "lista.h"
 
-void main(void){
+int main(void){
 
     Lista* lista = lista_cria();
 
@@ -15,5 +15,7 @@ void main(void){
     lista_retira(&lista, pont3);
 
     lista_imprime(lista);
+
+    return 0;
 
 }
