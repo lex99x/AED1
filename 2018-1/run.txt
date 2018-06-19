@@ -1,1 +1,1 @@
-gcc -c *.c && gcc -o ../build/main *.o && mv *.o ../build/ && ./../build/main
+gcc -c *.c && gcc -o ../bin/main *.o && mv *.o ../bin/ && ./../bin/main
