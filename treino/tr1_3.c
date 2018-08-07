@@ -3,30 +3,30 @@
 
 double hAge(int dAge, char race[]){
 
-    if(strcmp(race, "pequeno") == 0){
+	if(strcmp(race, "pequeno") == 0){
 
-        return dAge * 12.5;
+		return dAge * 12.5;
 
-    }else if(strcmp(race, "medio") == 0){
+	}else if(strcmp(race, "medio") == 0){
 
-        return dAge * 10.5;
+		return dAge * 10.5;
 
-    }else{
+	}else{
 
-        return dAge * 9.0;
+		return dAge * 9.0;
 
-    }
+	}
 
 }
 
 int main(){
 
-    int dAge;
-    char race[8];
+	int dAge;
+	char race[8];
 
-    scanf("%d", &dAge);
-    scanf("%s", race);
+	scanf("%d", &dAge);
+	scanf("%s", race);
 
-    printf("%.1lf", hAge(dAge, race));
+	printf("%.1lf", hAge(dAge, race));
 
 }

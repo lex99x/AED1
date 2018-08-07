@@ -32,33 +32,33 @@ double menor(double xs[]){
 
 	}
 
-    return m;
+	return m;
 
 }
 
 double media(double ns[]){
 
-    double M = maior(ns), m = menor(ns);
-    double soma;
+	double M = maior(ns), m = menor(ns);
+	double soma;
 
 	for(int i = 0; i < 4; i++){
 
-        soma += ns[i];
+		soma += ns[i];
 
 	}
 
-    return (soma - (m + M))/2;
+	return (soma - (m + M))/2;
 
 }
 
 int main(){
 
-    double n1, n2, n3, n4;
+	double n1, n2, n3, n4;
 
-    scanf("%lf %lf %lf %lf", &n1, &n2, &n3, &n4);
+	scanf("%lf %lf %lf %lf", &n1, &n2, &n3, &n4);
 
-    double ns[] = {n1, n2, n3, n4};
+	double ns[] = {n1, n2, n3, n4};
 
-    printf("%.2lf\n", media(ns));
+	printf("%.2lf\n", media(ns));
 
 }

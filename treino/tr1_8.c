@@ -14,17 +14,17 @@ int maior(int xs[]){
 
 	}
 
-    return n;
+	return n;
 
 }
 
 int main(){
 
-    int x, y, z;
+	int x, y, z;
 
 	scanf("%d %d %d", &x, &y, &z);
 
-    int array[] = {x - y, x - z, y - x, y - z, z - x, z- y};
+	int array[] = {x - y, x - z, y - x, y - z, z - x, z- y};
 
 	printf("%d\n", maior(array));
 

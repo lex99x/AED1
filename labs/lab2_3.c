@@ -32,28 +32,28 @@ double menor(double xs[]){
 
 	}
 
-    return m;
+	return m;
 
 }
 
 double media(double w, double x, double y, double z, double ns[]){
 
-    double soma = w + x + y + z;
-    double soma_M = maior(ns) + menor(ns);
-    double m2m = (soma - soma_M)/2;
+	double soma = w + x + y + z;
+	double soma_M = maior(ns) + menor(ns);
+	double m2m = (soma - soma_M)/2;
 
-    return (m2m * 8 + soma_M)/10;
+	return (m2m * 8 + soma_M)/10;
 
 }
 
 int main(){
 
-    double w, x, y, z;
+	double w, x, y, z;
 
-    scanf("%lf %lf %lf %lf", &w, &x, &y, &z);
+	scanf("%lf %lf %lf %lf", &w, &x, &y, &z);
 
-    double ns[] = {w, x, y, z};
+	double ns[] = {w, x, y, z};
 
-    printf("%.2lf\n", media(w, x, y, z, ns));
+	printf("%.2lf\n", media(w, x, y, z, ns));
 
 }

@@ -2,8 +2,8 @@
 
 typedef struct lista{
 
-    int num;
-    struct lista* prox;
+	int num;
+	struct lista* prox;
 
 } Lista;
 

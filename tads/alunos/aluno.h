@@ -3,10 +3,10 @@
 // Estrutura de um aluno
 
 typedef struct{
-    
-    char nome[81];
-    int matricula, turma;
-    float p1, p2, p3;
+
+	char nome[81];
+	int matricula, turma;
+	float p1, p2, p3;
 
 } Aluno;
 

@@ -3,75 +3,75 @@
 
 Fila* fila_criar(void){
 
-    // Aloca e inicializa nova fila com ponteiros nulos
+	// Aloca e inicializa nova fila com ponteiros nulos
 
-    Fila* fila = malloc(sizeof(Fila));
+	Fila* fila = malloc(sizeof(Fila));
 
-    fila -> ini = fila -> fim = NULL;
+	fila -> ini = fila -> fim = NULL;
 
-    return fila;
+	return fila;
 
 }
 
 void fila_inserir(Fila* fila, void* info){
 
-    // Aloca e inicializa nova lista com a info passada
+	// Aloca e inicializa nova lista com a info passada
 
-    Lista* lista = (Lista*) malloc(sizeof(Lista));
+	Lista* lista = (Lista*) malloc(sizeof(Lista));
 
-    lista -> info = info;
-    lista -> prox = NULL;
+	lista -> info = info;
+	lista -> prox = NULL;
 
-    // Verifica se a lista está vazia
+	// Verifica se a lista está vazia
 
-    if(fila -> fim == NULL){
+	if(fila -> fim == NULL){
 
-        // Atribue a nova lista ao início da fila
+		// Atribue a nova lista ao início da fila
 
-        fila -> ini = lista;
+		fila -> ini = lista;
 
-    }else{
+	}else{
 
-        // Linka o fim da fila à nova lista
+		// Linka o fim da fila à nova lista
 
-        fila -> fim -> prox = lista;
+		fila -> fim -> prox = lista;
 
-    }
+	}
 
-    // Atualiza o fim da fala para a nova lista
+	// Atualiza o fim da fala para a nova lista
 
-    fila -> fim = lista;
+	fila -> fim = lista;
 
 }
 
 void fila_remover(Fila* fila){
 
-    // Variável auxiliar com o endereço do início da fila
+	// Variável auxiliar com o endereço do início da fila
 
-    Lista* aux = fila -> ini;
+	Lista* aux = fila -> ini;
 
-    // Atualiza o início da fila para o elemento seguinte ao início desenfileirado
+	// Atualiza o início da fila para o elemento seguinte ao início desenfileirado
 
-    fila -> ini = fila -> ini -> prox;
+	fila -> ini = fila -> ini -> prox;
 
-    // Verifica se a lista ficou vazia
+	// Verifica se a lista ficou vazia
 
-    if (fila -> ini == NULL) fila -> fim = NULL;
+	if (fila -> ini == NULL) fila -> fim = NULL;
 
-    // Remove início desenfileirado da memória
+	// Remove início desenfileirado da memória
 
-    free(aux);
+	free(aux);
 
 }
 
 void* fila_inicio(Fila* fila){
 
-    return fila -> ini -> info;
+	return fila -> ini -> info;
 
 }
 
 void* fila_fim(Fila* fila){
 
-    return fila -> fim -> info;
+	return fila -> fim -> info;
 
 }

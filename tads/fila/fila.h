@@ -4,15 +4,15 @@
 
 typedef struct lista{
 
-    void* info;
-    struct lista* prox;
+	void* info;
+	struct lista* prox;
 
 } Lista;
 
 typedef struct{
 
-    Lista* ini;
-    Lista* fim;
+	Lista* ini;
+	Lista* fim;
 
 } Fila;
 

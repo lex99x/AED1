@@ -2,38 +2,38 @@
 
 int soma(int n){
 
-    if(n >= 1000){
+	if(n >= 1000){
 
-        int head = (int)(n/1000);
+		int head = (int)(n/1000);
 
-        return head + soma(n - head * 1000);
+		return head + soma(n - head * 1000);
 
-    }else if(n >= 100){
+	}else if(n >= 100){
 
-        int head = (int)(n/100);
+		int head = (int)(n/100);
 
-        return head + soma(n - head * 100);
+		return head + soma(n - head * 100);
 
-    }else if(n >= 10){
+	}else if(n >= 10){
 
-        int head = (int)(n/10);
+		int head = (int)(n/10);
 
-        return head + soma(n - head * 10);
+		return head + soma(n - head * 10);
 
-    }else{
+	}else{
 
-        return n;
+		return n;
 
-    }
+	}
 
 }
 
 int main(){
 
-    int n;
+	int n;
 
-    scanf("%d", &n);
+	scanf("%d", &n);
 
-    printf("valor original: %d\nsoma dos digitos: %d", n, soma(n));
+	printf("valor original: %d\nsoma dos digitos: %d", n, soma(n));
 
 }
