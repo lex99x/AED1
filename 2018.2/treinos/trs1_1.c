@@ -1,5 +1,3 @@
-#include <stdio.h>
-
 // Enunciado
 // Calcule a idade humana equivalente de um cachorro, sabendo que para cada
 // ano de vida humano equivale a aproximadamente 10 anos do cachorro.
@@ -14,6 +12,8 @@
 // 1.00
 // Exemplo de Saída
 // 10 ano(s) 0 mes(es)
+
+#include <stdio.h>
 
 int main(void){
 

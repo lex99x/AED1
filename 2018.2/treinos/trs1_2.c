@@ -1,5 +1,3 @@
-#include <stdio.h>
-
 // Enunciado
 // Crie um programa que calcule quanto um aluno precisa tirar em sua prova final
 // ao digitar as três notas parciais do mesmo. Sabe-se que a média para aprovação é 5.
@@ -15,6 +13,8 @@
 // 5.5
 // Exemplo de Saída
 // 4.00
+
+#include <stdio.h>
 
 int main(void){
 
