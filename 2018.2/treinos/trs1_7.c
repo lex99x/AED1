@@ -31,16 +31,17 @@
 
 int main(void){
 
-	double cliente = 0.0, acomp = 0.0, desconto = 0.0;
+	double cliente = 0.0, acomp = 0.0, desconto = 0.0, total = 0.0;
 
 	scanf("%lf", &cliente);
 	scanf("%lf", &acomp);
 
-	desconto = acomp - (acomp * 0.35);
+	desconto = acomp - acomp * 0.35;
+	total = cliente + desconto;
 
-	printf("%.1lf\n", cliente);
-	printf("%.1lf\n", desconto);
-	printf("%.1lf\n", cliente + desconto);
+	printf("%.2lf\n", cliente);
+	printf("%.2lf\n", desconto);
+	printf("%.2lf\n", total);
 
 	return 0;
 
