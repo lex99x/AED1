@@ -4,19 +4,14 @@
 //ocorrer ao longo do dia no período entre a abertura e fechamento da bolsa.
 //As variações de preços são medidas por meio dos percentuais de ganhos ou perdas
 //em relação ao preço de abertura da ação.
-
 //Por exemplo, se uma ação iniciou o dia com o valor de R$ 10,00 e obteve
 //uma valorização de 10% ao longo do dia. Isso significa que este ativo
 //encerrou com o novo valor de R$ 11,00 no fechamento da bolsa.
-
 //Com base nessas informações, escreva um programa que leia:
-
 //O preço da ação na abertura da bolsa.
 //O preço da ação no fechamento da bolsa.
-
 //Como saída, imprima o percentual positivo, caso ocorra a valorização da
 //ação, ou o percentual negativo, caso ocorra a desvalorização da ação.
-
 //Dicas
 //O percentual de ganho ou perda pode ser definido pela análise da diferença
 //entre o preço de fechamento e o preço de abertura.

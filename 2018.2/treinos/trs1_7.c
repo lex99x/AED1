@@ -1,20 +1,14 @@
 // Enunciado
 // Um cliente ganhou um cupom com 35% de desconto na compra de uma passagem
 // aérea para acompanhante para voos de ida e volta para qualquer destino do Brasil.
-
 // A regra do cupom define que o desconto é válido somente para a compra de
 // duas passagens aéreas, sendo que, o desconto é dado somente para a passagem do acompanhante.
-
 // Escreva um programa que leia:
-
 // Preço da passagem do cliente.
 // Preço da passagem do acompanhante.
-
 // Como saída, imprima os valores finais de cada uma das passagens e o valor
 // total da compra. O valor total do desconto é dado pela seguinte fórmula:
-
 // Desconto = precoAcompanhante - (precoAcompanhante * 0.35)
-
 // Dicas
 // Os valores devem possuir no máximo duas casas decimais.
 // Utilize uma constante para armazenar o valor do desconto.

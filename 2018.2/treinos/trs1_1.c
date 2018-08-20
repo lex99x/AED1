@@ -3,11 +3,9 @@
 // ano de vida humano equivale a aproximadamente 10 anos do cachorro.
 // O seu programa deve informar, idade do cachorro na forma ano(s) e mes(es),
 // no caso de idades humanas não completas.
-
 // Dicas
 // Considere que a entrada humana é informada com um número real,
 // onde a arte fracionária representa os meses da idade, variando de 0 a 11.
-
 // Exemplo de Entrada
 // 1.00
 // Exemplo de Saída

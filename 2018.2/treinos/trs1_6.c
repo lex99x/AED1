@@ -3,17 +3,13 @@
 // dos imóveis com base na área total do espaço e no valor de mercado agregado
 // pela localização geográfica do imóvel. Além disso, área total do imóvel pode
 // ser dividida em três áreas: privativa, comum e garagem.
-
 // Com base nessas informações, escreva um programa que leia as seguintes informações:
-
 // Preço da área por m2.
 // Área privativa – ap (m2).
 // Área comum – ac (m2).
 // Área da garagem – ag (m2).
-
 // Como saída, imprima o valor total do imóvel, que é dado pela seguinte fórmula:
 // PrecoTotal = (ap + ac + ag) * PrecoDaArea
-
 // Dicas
 // O preço da área total do imóvel é calculado pela multiplicação do preço
 // do metro quadrado pela área total do imóvel.

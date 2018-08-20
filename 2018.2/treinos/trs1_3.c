@@ -1,7 +1,6 @@
 // Enunciado
 // Desenvolva um programa que leia um número de 4 dígitos e exiba a soma do valor de cada dígito.
 // Por exemplo, se o usuário digitar 1212, o programa deve exibir 1 + 2 + 1 + 2 = 6.
-
 // Exemplo de Entrada
 // 1212
 // Exemplo de Saída
