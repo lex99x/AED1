@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <math.h>
 
-short fibo(int n){
+short pertence(int n){
 
 	double raiz1 = sqrt(5 * n * n + 4), raiz2 = sqrt(5 * n * n - 4);
 
@@ -21,7 +21,7 @@ int main(void){
 
 	scanf("%d %d %d", &n1, &n2, &n3);
 
-	bool = (fibo(n1) && fibo(n2) && fibo(n3)) && consecutivo(n1, n2, n3);
+	bool = (pertence(n1) && pertence(n2) && pertence(n3)) && consecutivo(n1, n2, n3);
 
 	printf("%d\n", bool);
 

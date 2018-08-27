@@ -70,17 +70,6 @@ unsigned long emsegundosdesde2000(int ano, int mes, int dia, int hora, int min, 
 
 }
 
-void printNinhada(int ano, int mes, int dia, int hora, int min, int seg){
-
-	printf("%d-", ano);
-	mes < 10 ? printf("0%d-", mes) : printf("%d-", mes);
-	dia < 10 ? printf("0%d ", dia) : printf("%d ", dia);
-	hora < 10 ? printf("0%d:", hora) : printf("%d:", hora);
-	min < 10 ? printf("0%d:", min) : printf("%d:", min);
-	seg < 10 ? printf("0%d\n", seg) : printf("%d\n", seg);
-
-}
-
 int main(void){
 
 	int contNinhada = 1;
@@ -143,8 +132,8 @@ int main(void){
 	 	}
 
 	 	printf("Ninhada:%d\n", contNinhada);
-	 	printNinhada(anoVelho, mesVelho, diaVelho, horaVelho, minVelho, segVelho);
-	 	printNinhada(anoNovo, mesNovo, diaNovo, horaNovo, minNovo, segNovo);
+	 	printf("%4d-%02d-%02d %02d:%02d:%02d\n", anoVelho, mesVelho, diaVelho, horaVelho, minVelho, segVelho);
+	 	printf("%4d-%02d-%02d %02d:%02d:%02d\n", anoNovo, mesNovo, diaNovo, horaNovo, minNovo, segNovo);
 
 		scanf("%d-%d-%d %d:%d:%d", &anoVelho, &mesVelho, &diaVelho, &horaVelho, &minVelho, &segVelho);
 
