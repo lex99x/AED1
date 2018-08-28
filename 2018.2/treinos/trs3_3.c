@@ -33,9 +33,9 @@ int main(void){
 
 	scanf("%d %d", &tmp1, &tmp2);
 
-	maiorVar = menorVar = var = modulo(tmp2 - tmp1);
-
 	while(tmp1 != -100 && tmp2 != -100){
+
+		maiorVar = menorVar = var = modulo(tmp2 - tmp1);
 
 		while(tmp1 != 100 && tmp2 != 100){
 
@@ -55,8 +55,6 @@ int main(void){
 		}else printf("estufa estabilizada\n");
 
 		scanf("%d %d", &tmp1, &tmp2);
-
-		maiorVar = menorVar = var = modulo(tmp2 - tmp1);
 
 	}
 

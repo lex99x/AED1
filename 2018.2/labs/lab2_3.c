@@ -1,184 +1,72 @@
+// Enunciado
+// Seu professor realizar quatro avaliações parciais durante o semestre e
+// calcula a média parcial (MP) com segue.
+// MP = (M2M + P1 + P2)/10
+// onde M2M é a média aritmética das chamadas segundas notas, i.e. a segunda
+// maior e a segunda menor nota, e P1 e P2 são as outras notas parciais. P1
+// sendo a maior nota e P2 sendo a menor nota. Escreva o programa que ajude
+// o seu professor a calcular as notas dos alunos. Use no máximo quatro
+// variáveis para implementar o programa. Se professor atribui peso 8 para a M2M.
+// Exemplo de Entrada
+// 5.0 6.0 8.0 10.0
+// Exemplo de Saída
+// 7.10
+
 #include <stdio.h>
-
-//double maior(double n1, double n2, double n3, double n4){
-
-	//double maior = n1;
-
-	//if(n2 > maior){
-
-		//maior = n2;
-
-	//}
-
-	//if(n3 > maior){
-
-		//maior = n3;
-
-	//}
-
-	//if(n4 > maior){
-
-		//maior = n4;
-
-	//}
-
-	//return maior;
-
-//}
-
-//double menor(double n1, double n2, double n3, double n4){
-
-	//double menor = n1;
-
-	//if(n2 < menor){
-
-		//menor = n2;
-
-	//}
-
-	//if(n3 < menor){
-
-		//menor = n3;
-
-	//}
-
-	//if(n4 < menor){
-
-		//menor = n4;
-
-	//}
-
-	//return menor;
-
-//}
-
-//double smaior(double n1, double n2, double n3, double n4){
-
-	//double aux, smaior = n1, maior = n2;
-
-	//if(smaior > maior){
-
-		//aux = smaior;
-		//smaior = maior;
-		//maior = aux;
-
-	//}
-
-	//if(n3 > maior){
-
-		//aux = maior;
-		//maior = n3;
-		//smaior = aux;
-
-	//}else if(n3 > smaior){
-
-		//smaior = n3;
-
-	//}
-
-	//if(n4 > maior){
-
-		//aux = maior;
-		//maior = n4;
-		//smaior = aux;
-
-	//}else if(n4 > smaior){
-
-		//smaior = n4;
-
-	//}
-
-	//return smaior;
-
-
-//}
-
-//double smenor(double n1, double n2, double n3, double n4){
-
-	//double aux, smenor = n1, menor = n2;
-
-	//if(smenor < menor){
-
-		//aux = smenor;
-		//smenor = menor;
-		//menor = aux;
-
-	//}
-
-	//if(n3 < menor){
-
-		//aux = menor;
-		//menor = n3;
-		//smenor = aux;
-
-	//}else if(n3 < smenor){
-
-		//smenor = n3;
-
-	//}
-
-	//if(n4 < menor){
-
-		//aux = menor;
-		//menor = n4;
-		//smenor = aux;
-
-	//}else if(n4 < smenor){
-
-		//smenor = n4;
-
-	//}
-
-	//return smenor;
-
-
-//}
 
 int main(void){
 
-	double maior, menor, smaior, smenor;
+	double maior, menor, S2M, nota;
 
-	scanf("%lf %lf", &menor, &smenor);
+	scanf("%lf %lf", &maior, &menor);
 
-	if(smenor < menor){
+	if(menor > maior){
 
-		smaior = menor;
-		menor = smenor;
-		smenor = smaior;
-
-	}
-
-	scanf("%lf", &smaior);
-
-	if(smaior < menor){
-
+		S2M = maior;
 		maior = menor;
-		menor = smaior;
-		smaior = smenor;
-		smenor = maior;
-
-	}else if(smaior > menor && smaior < smenor){
-
-		maior = smenor;
-		smenor = smaior;
-		smaior = maior;
+		menor = S2M;
 
 	}
 
-	scanf("%lf", &maior);
+	scanf("%lf", &nota);
 
-	//if(maior < menor){
+	if(nota <= menor){
 
+		S2M = menor;
+		menor = nota;
 
+	}else if(nota >= maior){
 
-	//}
+		S2M = maior;
+		maior = nota;
 
-	printf("%.1lf %.1lf %.1lf %.1lf\n", menor, smenor, smaior, maior);
+	}else{
 
-	//M2M = (smaior(n1, n2, n3, n4) + smenor(n1, n2, n3, n4))/2.0;
-	//MP = (M2M * 8 + maior(n1, n2, n3, n4) + menor(n1, n2, n3, n4))/10.0;
+		S2M = nota;
 
-	//printf("%.2lf\n", MP);
+	}
+
+	scanf("%lf", &nota);
+
+	if(nota <= menor){
+
+		S2M += menor;
+		menor = nota;
+
+	}else if(nota >= maior){
+
+		S2M += maior;
+		maior = nota;
+
+	}else{
+
+		S2M += nota;
+
+	}
+
+	nota = (4.0 * S2M + maior + menor)/10.0;
+
+	printf("%.2lf\n", nota);
 
 	return 0;
 
