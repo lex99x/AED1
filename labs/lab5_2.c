@@ -1,7 +1,7 @@
 // Enunciado
 // DISTÂNCIA EUCLIDIANA: RECOMENDAÇÃO DE PRODUTOS
 // O grau de similaridade entre dois vetores
-//  pode ser calculado pela distância Euclidiana, como definida a seguir:
+// pode ser calculado pela distância Euclidiana, como definida a seguir:
 // O site de e-commerce Pilhados usa a distância euclidiana para calcular a similaridade
 // entre produtos e recomendar aos seus clientes em vitrines do tipo "Produtos que talvez você tenha interesse".
 // Sete características dos produtos são codificadas, usando valores inteiros, e geram uma série S de 7-tuplas.
