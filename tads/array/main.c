@@ -5,7 +5,7 @@
 
 typedef struct{
 
-	char nome[50];
+	char nome[51];
 	int matricula;
 	int idade;
 	char sexo;
