@@ -1,22 +1,21 @@
-// TAD: array de inteiros
+// TAD: array
 
 typedef struct{
 
-	int tam, ocup, *agreg;
+	int tam;
+	int ocup;
+	void** agreg;
 
 } Array;
 
 // Função que aloca e retorna novo array
-Array* criar(int tam);
+Array* criarArray(int tam);
 
-// Função que insere novo elemento no array
-void inserir(Array* array, int num);
+// Função que insere endereço de novo elemento no array
+void inserirArray(Array* array, void* elem);
 
-// Função que acessa elemento do array pelo índice passado
-int acessar(Array* array, int i);
-
-// Função que imprime elementos do array
-void imprimir(Array* array);
+// Função que acessa endereço de elemento do array por posição
+void* acessarArray(Array* array, int pos);
 
 // Função que libera a memória alocada para o array
-void liberar(Array* array);
+void liberarArray(Array* array);

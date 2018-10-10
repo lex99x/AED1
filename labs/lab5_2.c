@@ -7,7 +7,7 @@
 // Sete características dos produtos são codificadas, usando valores inteiros, e geram uma série S de 7-tuplas.
 // Alice acabou de comprar um produto no site Pilhados e terá uma vitrine gerada para ela.
 // A sua tarefa é escrever um programa que recebe uma 7-tupla, que descreve o produto comprado
-// por Alice, e as  7-tuplas que descrevem os produtos do site, para posteriormente indicar o
+// por Alice, e as 7-tuplas que descrevem os produtos do site, para posteriormente indicar o
 // grau de similaridade dos produtos do site e o comprado por Alice.
 // Considere:
 // 1) A Vitrine em questão comporta no máximo 10 produtos, portanto ela poderá ter ATÉ 10 produtos similares;
@@ -44,28 +44,71 @@
 #include <stdio.h>
 #include <math.h>
 
-double similaridade(int* produtoComprado, int* produtoSugerido){
+double dist(int* produtoComprado, int* produtoSugerido){
 
-	int i; double similaridade = 0.0;
+	int i; 
+	double dist = 0.0;
 
-	for(i = 0; i < 7; i++) similaridade += pow(produtoComprado[i] - produtoSugerido[i], 2);
+	for(i = 0; i < 7; i++) dist += pow(produtoComprado[i] - produtoSugerido[i], 2);
 
-	return sqrt(similaridade);
+	return sqrt(dist);
+
+}
+
+void selsort(double* vet, int n){
+
+	int i, j, imenor;
+	double aux;
+
+	for(i = 0; i < n - 1; i++){
+
+		imenor = i;
+
+		for(j = i + 1; j < n; j++) if(vet[imenor] > vet[j]) imenor = j;
+
+		aux = vet[i];
+		vet[i] = vet[imenor];
+		vet[imenor] = aux;
+
+	}
 
 }
 
 int main(void){
 
-	int i, produtoComprado[7], produtoSugerido[7];
-	double s;
+	int i, cont, atr, produtoComprado[7], produtoSugerido[7];
+	double similaridade, vitrine[10];
 
-	for(i = 0; i < 7; i++) scanf("%d", &produtoComprado[i]);
+	for(i = 0; i < 7; i++){
+		
+		scanf("%d", &atr); 
+		produtoComprado[i] = atr;
 
-	for(i = 0; i < 7; i++) scanf("%d", &produtoSugerido[i]);
+	}
 
-	s = similaridade(produtoComprado, produtoSugerido);
+	scanf("%d", &atr);
 
-	printf("%.2lf\n", s);
+	for(cont = 0; atr != -5000; cont++){
+		
+		produtoSugerido[0] = atr;
+
+		for(i = 1; i < 7; i++){
+			
+			scanf("%d", &atr);
+			produtoSugerido[i] = atr;
+			
+		}
+		
+		vitrine[cont] = dist(produtoComprado, produtoSugerido);
+		selsort(vitrine, cont + 1);
+
+		scanf("%d", &atr);
+	
+	}
+
+	printf("Os da vitrine:\n");
+
+	for(i = 1; i <= 10; i++) printf("%.4lf\n", vitrine[i]);
 
 	return 0;
 

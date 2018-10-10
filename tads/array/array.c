@@ -2,46 +2,42 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-Array* criar(int tam){
+Array* criarArray(int tam){
 
 	Array* array = (Array*) malloc(sizeof(Array));
-	array -> tam = tam;
+
+	if(tam != '\0') array -> tam = tam; else array -> tam = 1;
+
 	array -> ocup = 0;
-	array -> agreg = (int*) malloc(sizeof(int) * tam);
+	array -> agreg = malloc(tam * sizeof(void*));
 
 	return array;
 
 }
 
-void inserir(Array* array, int num){
+void inserirArray(Array* array, void* elem){
 
 	if(array -> tam == array -> ocup){
 
 		array -> tam *= 2;
-		array -> agreg = (int*) realloc(array -> agreg, sizeof(int) * array -> tam);
+		array -> agreg = realloc(array -> agreg, array -> tam * sizeof(void*));
 
 	}
 
-	array -> agreg[array -> ocup] = num;
+	array -> agreg[array -> ocup] = elem;
 	array -> ocup++;
 
 }
 
-int acessar(Array* array, int i){
+void* acessarArray(Array* array, int pos){
 
-	if(i < 0 || i > array -> ocup) exit(0);
+	if(pos < 0 || pos > array -> ocup) exit(0);
 
-	return array -> agreg[i];
-
-}
-
-void imprimir(Array* array){
-
-	for(int i = 0; i < array -> ocup; i++) printf("%d ", array -> agreg[i]); printf("\n");
+	return array -> agreg[pos];
 
 }
 
-void liberar(Array* array){
+void liberarArray(Array* array){
 
 	free(array -> agreg);
 	free(array);
