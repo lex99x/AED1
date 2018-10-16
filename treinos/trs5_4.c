@@ -1,5 +1,6 @@
 // Enunciado
-// Escreva um programa que leia um vetor de inteiros de 11 posições, e em seguida imprima a mediana desse vetor.
+// Escreva um programa que leia um vetor de inteiros de 11 posições, 
+// e em seguida imprima a mediana desse vetor.
 // A mediana de um vetor é o valor que se encontra exatamente no meio do vetor.
 // Observações!!
 // 1) você não pode alterar o vetor (modificar os valores do vetor, nem mover os elementos de posição);

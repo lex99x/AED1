@@ -25,42 +25,116 @@
 // Matricula: 2173000
 
 #include <stdio.h>
+#include <stdlib.h>
+#define MAX 100
+
+typedef struct{
+
+	int matricula;
+	int nota;
+
+} Candidato;
+
+void selsort(int** vet, int n){
+
+	int i, j, imenor;
+	int* aux;
+
+	for(i = 0; i < n - 1; i++){
+
+		imenor = i;
+
+		for(j = i + 1; j < n; j++) if(*vet[imenor] > *vet[j]) imenor = j;
+
+		aux = vet[i];
+		vet[i] = vet[imenor];
+		vet[imenor] = aux;
+
+	}
+
+}
+
+int frequencia(Candidato** candidatos, int n, int nota){
+
+	int freq = 0, cont;
+
+	for(cont = 0; cont < n; cont++) if(candidatos[cont] -> nota == nota) freq++;
+
+	return freq;
+
+}
 
 int main(void){
 
-	int matricula, candidatos[100][2], freq, mfreq, moda;
-	int cont, i, j;
-	short primVez = 1;
+	int matricula, cont;
+
+	Candidato* candidatos[MAX];
 
 	scanf("%d", &matricula);
 
 	for(cont = 0; matricula >= 0; cont++){
 
-		candidatos[cont][1] = matricula;
-		scanf("%d", &candidatos[cont][2]);
+		Candidato* candidato = (Candidato*) malloc(sizeof(Candidato));
+
+		candidato -> matricula = matricula;
+
+		scanf("%d", &candidato -> nota);
+
+		candidatos[cont] = candidato;
+
 		scanf("%d", &matricula);
 
 	}
 
+	int freq, mfreq = 0, i;
+
 	for(i = 0; i < cont; i++){
 
-		freq = 0;
+		freq = frequencia(candidatos, cont, candidatos[i] -> nota);
 
-		for(j = 0; j < cont; j++) if(candidatos[j][2] == candidatos[i][2]) freq++;
+		if(freq > mfreq) mfreq = freq;
 
-		if(primVez || freq > mfreq){
+	}
 
-			primVez = 0;
-			mfreq = freq;
-			moda = candidatos[i][2];
+	int j = 0;
+	int *modas[MAX];
+
+	for(i = 0; i < cont; i++){
+
+		freq = frequencia(candidatos, cont, candidatos[i] -> nota);
+
+		if(freq == mfreq){
+
+			modas[j] = &candidatos[i] -> nota;
+			j++;
 
 		}
 
 	}
 
-	printf("Nota: %.2lf\n", moda/100.0);
+	selsort(modas, j);
 
-	for(i = 0; i < cont; i++) if(candidatos[i][2] == moda) printf("Matricula: %d\n", candidatos[i][1]);
+	int ant, k;
+	short primVez = 1;
+
+	for(i = 0; i < j; i++){
+
+		if(primVez || *modas[i] != ant){
+
+			primVez = 0;
+			ant = *modas[i];
+
+			printf("Nota: %.2lf\n", *modas[i]/100.0);
+
+			for(k = 0; k < cont; k++){
+
+				if(candidatos[k] -> nota == *modas[i]) printf("Matricula: %d\n", candidatos[k] -> matricula);
+
+			}
+
+		}
+
+	}
 
 	return 0;
 
