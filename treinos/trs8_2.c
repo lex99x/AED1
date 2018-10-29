@@ -1,6 +1,50 @@
+// Enunciado
+// Faça um programa que leia duas listas (A e B) de valores numéricos positivos
+// ordenados (a leitura de cada lista termina quando o valor lido for negativo),
+// coloque ambas as listas em listas encadeadas, imprima Uma lista contendo os
+// elementos de A e B intercalados sob as seguintes condições:
+// os valores na lista resultante devem estar ordenados;
+// Não basta imprimir, a lista encadeada correspondente deve ser criada.
+// Exemplo de Entrada
+// 2 4 10 15 -1
+// 1 3 9  14 -2
+// Exemplo de Saída
+// 1 2 3 4 9 10 14 15
+
 #include <stdio.h>
 #include <stdlib.h>
-#include "lista.h"
+
+typedef enum{
+
+	INT,
+	CHAR,
+	LONG,
+	FLOAT,
+	DOUBLE,
+	STRUCT,
+	VOID
+
+} Tipo;
+
+typedef struct elemento Elemento;
+
+struct elemento{
+
+	Tipo tipo;
+	void* info;
+	Elemento* ant;
+	Elemento* prox;
+
+};
+
+typedef struct{
+
+	int quant;
+	Tipo tipo;
+	Elemento* inicio;
+	Elemento* final;
+
+} Lista;
 
 Lista* criarLista(void){
 
@@ -54,19 +98,12 @@ void inserirFinalLista(Lista* lista, void* info, Tipo tipo){
 
 }
 
-void inserirOrdenadoLista(Lista* lista, void* info, Tipo tipo, Converter converter){
-
-	switch(lista -> tipo){
-
-		case INT: int info = *((int*) info), ; break;
-		case DOUBLE: double info = *((double*) info); break;
-
-	}
+void inserirOrdenadoLista(Lista* lista, void* info, Tipo tipo){
 
 	Elemento* elemento = lista -> inicio;
 	Elemento* ant = NULL;
 
-	while(elemento != NULL && *elemento -> info < converter(info)){
+	while(elemento != NULL && (*((int*) elemento -> info) < *((int*) info))){
 
 		ant = elemento;
 		elemento = elemento -> prox;
@@ -87,6 +124,8 @@ void inserirOrdenadoLista(Lista* lista, void* info, Tipo tipo, Converter convert
 
 	}
 
+	lista -> quant++;
+
 }
 
 void* removerInicioLista(Lista* lista){
@@ -105,7 +144,7 @@ void* removerInicioLista(Lista* lista){
 
 		lista -> quant--;
 
-	}
+	}else printf("NÃO É POSSÍVEL REMOVER INÍCIO DE LISTA VAZIA!\n");
 
 	return info;
 
@@ -127,11 +166,13 @@ void* removerFinalLista(Lista* lista){
 
 		lista -> quant--;
 
-	}
+	}else printf("NÃO É POSSÍVEL REMOVER FINAL DE LISTA VAZIA!\n");
 
 	return info;
 
 }
+
+typedef void (*Imprimir)(void*, Tipo);
 
 void imprimirLista(Lista* lista, Imprimir imprimir){
 
@@ -142,13 +183,53 @@ void imprimirLista(Lista* lista, Imprimir imprimir){
 		while(elemento != NULL){
 
 			imprimir(elemento -> info, elemento -> tipo);
-			
+
 			elemento = elemento -> prox;
 
 		}
 
-		printf("\n");
+	}else printf("NÃO É POSSÍVEL IMPRIMIR LISTA VAZIA!");
+
+}
+
+void imprimirInfo(void* info, Tipo tipo){
+
+	printf("%d ", *((int*) info));
+
+}
+
+int main(void){
+
+	Lista* listaC = criarLista();
+
+	int* val = (int*) malloc(sizeof(int));
+
+	scanf("%d", val);
+
+	while(*val >= 0){
+
+		inserirOrdenadoLista(listaC, val, INT);
+
+		val = (int*) malloc(sizeof(int));
+
+		scanf("%d", val);
 
 	}
+
+	scanf("%d", val);
+
+	while(*val >= 0){
+
+		inserirOrdenadoLista(listaC, val, INT);
+
+		val = (int*) malloc(sizeof(int));
+
+		scanf("%d", val);
+
+	}
+
+	imprimirLista(listaC, imprimirInfo);
+
+	return 0;
 
 }

@@ -22,38 +22,28 @@
 
 #include <stdio.h>
 
-int trocas = 0;
+int selsort(int vetor[], int n){
 
-void quicksort(int* vet, int inicio, int fim){
+	int i, j, imenor, aux, trocas = 0;
 
-	int pivo, imeio, imin, imax, aux;
+	for(i = 0; i < n - 1; i++){
 
-	imin = inicio; imax = fim;
-	imeio = (imin + imax)/2;
-	pivo = vet[imeio];
+		imenor = i;
 
-	do{
+		for(j = i + 1; j < n; j++) if(vetor[j] < vetor[imenor]) imenor = j;
 
-		while(vet[imin] < pivo) ++imin;
-		while(vet[imax] > pivo) --imax;
+		if(imenor != i){
 
-		if(imin <= imax){
-
-			aux = vet[imin];
-			vet[imin] = vet[imax];
-			vet[imax] = aux;
-
-			++imin; --imax;
-
+			aux = vetor[i];
+			vetor[i] = vetor[imenor];
+			vetor[imenor] = aux;
 			trocas++;
 
 		}
 
-	}while(imax > imin);
+	}
 
-	if(inicio < imax) quicksort(vet, inicio, imax);
-
-	if(imin < fim) quicksort(vet, imin, fim);
+	return trocas;
 
 }
 
@@ -63,15 +53,15 @@ int main(void){
 
 	scanf("%d", &n);
 
-	int i, notas[n];
+	int notas[n], cont;
 
-	for(i = 0; i < n; i++) scanf("%d", &notas[i]);
+	for(cont = 0; cont < n; cont++) scanf("%d", &notas[cont]);
 
-	quicksort(notas, 0, n - 1);
+	int trocas = selsort(notas, n);
 
-	printf("trocas: %d\n", trocas - 1);
+	printf("trocas: %d\n", trocas);
 
-	for(i = 0; i < n; i++) printf("%.2lf ", notas[i]/100.0);
+	for(cont = 0; cont < n; cont++) printf("%.2lf ", notas[cont]/100.0);
 
 	return 0;
 

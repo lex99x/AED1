@@ -1,37 +1,60 @@
-// TAD: lista de inteiros
+// TAD: lista duplamente encadeada
 
-typedef struct lista{
+typedef enum{
 
-	int num;
-	struct lista* prox;
+	INT,
+	CHAR,
+	LONG,
+	FLOAT,
+	DOUBLE,
+	STRUCT,
+	VOID
+
+} Tipo;
+
+typedef struct elemento Elemento;
+
+struct elemento{
+
+	Tipo tipo;
+	void* info;
+	Elemento* ant;
+	Elemento* prox;
+
+};
+
+typedef struct{
+
+	int quant;
+	Tipo tipo;
+	Elemento* inicio;
+	Elemento* final;
 
 } Lista;
 
-// Função que inicializa a lista com valor nulo
+// Função que aloca e retorna nova lista
+Lista* criarLista(void);
 
-Lista* lista_cria(void);
+// Função que aloca e retorna novo elemento de lista
+Elemento* criarElemento(void* info, Tipo tipo);
 
-// Função que insere elemento na lista
+// Função que insere novo elemento no ínicio da lista passada
+void inserirInicioLista(Lista* lista, void* info, Tipo tipo);
 
-Lista* lista_insere(Lista** lista, int num);
+// Função que insere novo elemento no final da lista passada
+void inserirFinalLista(Lista* lista, void* info, Tipo tipo);
 
-// Função que libera a memória alocada para os elementos da lista
+typedef void* (*Converter)(void* info);
 
-void lista_libera(Lista* lista);
+void inserirOrdenadoLista(Lista* lista, void* info, Tipo tipo, Converter converter);
 
-// Função que imprime os elementos da lista
+// Função que remove elemento inicial da lista passada
+void* removerInicioLista(Lista* lista);
 
-void lista_imprime(Lista* lista);
+// Função que remove elemento final da lista passada
+void* removerFinalLista(Lista* lista);
 
-// Função que verifica se a lista está vazia
+typedef void (*Imprimir)(void*, Tipo);
 
-short lista_vazia(Lista* lista);
-
-// Função que dada uma lista e o endereço de um elemento da lista,
-// retorna o endereço do elemento anterior
-
-Lista* lista_anterior(Lista* lista, Lista* pont);
-
-// Função que retira elemento da lista dado seu endereço de memória
-
-void lista_retira(Lista** lista, Lista* pont);
+// Função que, dada uma lista e a função de impressão específica, imprime toda a lista
+void imprimirLista(Lista* lista, Imprimir imprimir);
