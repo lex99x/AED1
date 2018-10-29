@@ -54,19 +54,12 @@ void inserirFinalLista(Lista* lista, void* info, Tipo tipo){
 
 }
 
-void inserirOrdenadoLista(Lista* lista, void* info, Tipo tipo, Converter converter){
-
-	switch(lista -> tipo){
-
-		case INT: int info = *((int*) info), ; break;
-		case DOUBLE: double info = *((double*) info); break;
-
-	}
+void inserirOrdenadoLista(Lista* lista, void* info, Tipo tipo){
 
 	Elemento* elemento = lista -> inicio;
 	Elemento* ant = NULL;
 
-	while(elemento != NULL && *elemento -> info < converter(info)){
+	while(elemento != NULL && (*((int*) elemento -> info) < *((int*) info))){
 
 		ant = elemento;
 		elemento = elemento -> prox;
@@ -86,6 +79,8 @@ void inserirOrdenadoLista(Lista* lista, void* info, Tipo tipo, Converter convert
 		ant -> prox = elemento;
 
 	}
+
+	lista -> quant++;
 
 }
 

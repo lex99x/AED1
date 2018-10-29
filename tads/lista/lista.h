@@ -44,9 +44,9 @@ void inserirInicioLista(Lista* lista, void* info, Tipo tipo);
 // Função que insere novo elemento no final da lista passada
 void inserirFinalLista(Lista* lista, void* info, Tipo tipo);
 
-typedef void* (*Converter)(void* info);
-
-void inserirOrdenadoLista(Lista* lista, void* info, Tipo tipo, Converter converter);
+// Função que insere novo elemento na lista passada em ordem crescente
+// Obs.: só funciona com lista de inteiros, por hora...
+void inserirOrdenadoLista(Lista* lista, void* info, Tipo tipo);
 
 // Função que remove elemento inicial da lista passada
 void* removerInicioLista(Lista* lista);
@@ -54,7 +54,6 @@ void* removerInicioLista(Lista* lista);
 // Função que remove elemento final da lista passada
 void* removerFinalLista(Lista* lista);
 
+// Função que, dada uma lista e uma função de impressão específica, imprime toda a lista
 typedef void (*Imprimir)(void*, Tipo);
-
-// Função que, dada uma lista e a função de impressão específica, imprime toda a lista
 void imprimirLista(Lista* lista, Imprimir imprimir);
