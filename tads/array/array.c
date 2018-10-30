@@ -1,45 +1,54 @@
-#include "array.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include "array.h"
 
 Array* criarArray(int tam){
 
 	Array* array = (Array*) malloc(sizeof(Array));
 
-	if(tam != '\0') array -> tam = tam; else array -> tam = 1;
+	if(tam != '\0') array -> tam = tam;
+	else array -> tam = 1;
 
+	array -> vet = (void**) malloc(array -> tam * sizeof(void*));
 	array -> ocup = 0;
-	array -> agreg = malloc(tam * sizeof(void*));
 
 	return array;
 
 }
 
-void inserirArray(Array* array, void* elem){
+void inserirArray(Array* array, void* info){
 
 	if(array -> tam == array -> ocup){
 
 		array -> tam *= 2;
-		array -> agreg = realloc(array -> agreg, array -> tam * sizeof(void*));
+		array -> vet = (void**) realloc(array -> vet, array -> tam * sizeof(void*));
 
 	}
 
-	array -> agreg[array -> ocup] = elem;
+	array -> vet[array -> ocup] = info;
 	array -> ocup++;
 
 }
 
 void* acessarArray(Array* array, int pos){
 
-	if(pos < 0 || pos > array -> ocup) exit(0);
-
-	return array -> agreg[pos];
+	if(pos >= 0 && pos <= array -> ocup) return array -> vet[pos];
+	else return NULL;
 
 }
 
-void liberarArray(Array* array){
+void imprimirArray(Array* array, Imprimir imprimir){
 
-	free(array -> agreg);
-	free(array);
+	int cont = 0;
+
+	while(cont < array -> ocup){
+
+		void* info = acessarArray(array, cont);
+
+		imprimir(info);
+
+		cont++;
+
+	}
 
 }

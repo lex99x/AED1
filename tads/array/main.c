@@ -1,53 +1,55 @@
-#include "array.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "array.h"
 
 typedef struct{
 
-	char nome[51];
 	int matricula;
 	int idade;
 	char sexo;
 
 } Aluno;
 
-int main(void){
+Array* lerAlunos(void){
 
-	Aluno* aluno;
 	Array* alunos = criarArray('\0');
-	char nome[51];
-	int i, j;
 
-	scanf(" %50[^\n]", nome);
+	Aluno* aluno = (Aluno*) malloc(sizeof(Aluno));
 
-	for(i = 0; strcmp(nome, "...") != 0; i++){
+	scanf("%d", &aluno -> matricula);
 
-		aluno = (Aluno*) malloc(sizeof(Aluno));
+	while(aluno -> matricula >= 0){
 
-		strcpy(aluno -> nome, nome);
-		scanf("%d", &aluno -> matricula);
-		scanf("%d", &aluno -> idade);
-		scanf(" %c", &aluno -> sexo);
+		scanf("%d %c", &aluno -> idade, &aluno -> sexo);
 
 		inserirArray(alunos, aluno);
 
-		scanf(" %50[^\n]", nome);
+		aluno = (Aluno*) malloc(sizeof(Aluno));
+
+		scanf("%d", &aluno -> matricula);
 
 	}
 
-	for(j = 0; j < i; j++){
+	free(aluno);
 
-		aluno = (Aluno*) acessarArray(alunos, j);
+	return alunos;
 
-		printf("%s\n", aluno -> nome);
-		printf("%d\n", aluno -> matricula);
-		printf("%d\n", aluno -> idade);
-		printf("%c\n", aluno -> sexo);
+}
 
-	}
+void imprimirAluno(void* info){
 
-	liberarArray(alunos);
+	Aluno* aluno = (Aluno*) info;
+
+	printf("%d %d %c\n", aluno -> matricula, aluno -> idade, aluno -> sexo);
+
+}
+
+int main(void){
+
+	Array* alunos = lerAlunos();
+
+	imprimirArray(alunos, imprimirAluno);
 
 	return 0;
 
