@@ -16,6 +16,3 @@ void inserirArray(Array* array, void* info, int pos);
 
 // Função que acessa endereço de elemento do array por posição
 void* acessarArray(Array* array, int pos);
-
-// Função que imprime array usando a função passada
-typedef void (*Imprimir)(void*); void imprimirArray(Array* array, Imprimir imprimir);
