@@ -12,7 +12,7 @@ typedef struct{
 Array* criarArray(int tam);
 
 // Função que insere endereço de novo elemento no array
-void inserirArray(Array* array, void* info);
+void inserirArray(Array* array, void* info, int pos);
 
 // Função que acessa endereço de elemento do array por posição
 void* acessarArray(Array* array, int pos);

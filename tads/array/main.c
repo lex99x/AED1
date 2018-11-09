@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include "array.h"
 
 typedef struct{
@@ -19,11 +18,11 @@ Array* lerAlunos(void){
 
 	scanf("%d", &aluno -> matricula);
 
-	while(aluno -> matricula >= 0){
+	for(int i = 0; aluno -> matricula >= 0; i++){
 
 		scanf("%d %c", &aluno -> idade, &aluno -> sexo);
 
-		inserirArray(alunos, aluno);
+		inserirArray(alunos, aluno, i);
 
 		aluno = (Aluno*) malloc(sizeof(Aluno));
 
@@ -37,11 +36,15 @@ Array* lerAlunos(void){
 
 }
 
-void imprimirAluno(void* info){
+void imprimirAlunos(Array* alunos){	
 
-	Aluno* aluno = (Aluno*) info;
+	for(int i = 0; i < alunos -> ocup; i++){
 
-	printf("%d %d %c\n", aluno -> matricula, aluno -> idade, aluno -> sexo);
+		Aluno* aluno = (Aluno*) acessarArray(alunos, i);
+
+		printf("%d %d %c\n", aluno -> matricula, aluno -> idade, aluno -> sexo);
+
+	}
 
 }
 
@@ -49,7 +52,9 @@ int main(void){
 
 	Array* alunos = lerAlunos();
 
-	imprimirArray(alunos, imprimirAluno);
+	printf("Tamanho: %d\n", alunos -> tam);
+	printf("Ocupação: %d\n", alunos -> ocup);
+	imprimirAlunos(alunos);
 
 	return 0;
 
