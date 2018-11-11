@@ -13,20 +13,18 @@ Lista* criarLista(void){
 
 }
 
-Elemento* criarElemento(void* info, Tipo tipo){
+Elemento* criarElemento(void* info){
 
 	Elemento* elemento = (Elemento*) malloc(sizeof(Elemento));
-
-	elemento -> tipo = tipo;
 	elemento -> info = info;
 
 	return elemento;
 
 }
 
-void inserirInicioLista(Lista* lista, void* info, Tipo tipo){
+void inserirInicioLista(Lista* lista, void* info){
 
-	Elemento* elemento = criarElemento(info, tipo);
+	Elemento* elemento = criarElemento(info);
 
 	elemento -> ant = NULL;
 	elemento -> prox = lista -> inicio;
@@ -39,9 +37,9 @@ void inserirInicioLista(Lista* lista, void* info, Tipo tipo){
 
 }
 
-void inserirFinalLista(Lista* lista, void* info, Tipo tipo){
+void inserirFinalLista(Lista* lista, void* info){
 
-	Elemento* elemento = criarElemento(info, tipo);
+	Elemento* elemento = criarElemento(info);
 
 	elemento -> ant = lista -> final;
 	elemento -> prox = NULL;
@@ -50,36 +48,6 @@ void inserirFinalLista(Lista* lista, void* info, Tipo tipo){
 	else lista -> final -> prox = elemento;
 
 	lista -> final = elemento;
-	lista -> quant++;
-
-}
-
-void inserirOrdenadoLista(Lista* lista, void* info, Tipo tipo){
-
-	Elemento* elemento = lista -> inicio;
-	Elemento* ant = NULL;
-
-	while(elemento != NULL && (*((int*) elemento -> info) < *((int*) info))){
-
-		ant = elemento;
-		elemento = elemento -> prox;
-
-	}
-
-	elemento = criarElemento(info, tipo);
-
-	if(ant == NULL){
-
-		elemento -> prox = lista -> inicio;
-		lista -> inicio = elemento;
-
-	}else{
-
-		elemento -> prox = ant -> prox;
-		ant -> prox = elemento;
-
-	}
-
 	lista -> quant++;
 
 }
@@ -128,6 +96,36 @@ void* removerFinalLista(Lista* lista){
 
 }
 
+// void inserirOrdenadoLista(Lista* lista, void* info){
+
+// 	Elemento* elemento = lista -> inicio;
+// 	Elemento* ant = NULL;
+
+// 	while(elemento != NULL && (*((int*) elemento -> info) < *((int*) info))){
+
+// 		ant = elemento;
+// 		elemento = elemento -> prox;
+
+// 	}
+
+// 	elemento = criarElemento(info);
+
+// 	if(ant == NULL){
+
+// 		elemento -> prox = lista -> inicio;
+// 		lista -> inicio = elemento;
+
+// 	}else{
+
+// 		elemento -> prox = ant -> prox;
+// 		ant -> prox = elemento;
+
+// 	}
+
+// 	lista -> quant++;
+
+// }
+
 void imprimirLista(Lista* lista, Imprimir imprimir){
 
 	if(lista -> quant > 0){
@@ -136,8 +134,8 @@ void imprimirLista(Lista* lista, Imprimir imprimir){
 
 		while(elemento != NULL){
 
-			imprimir(elemento -> info, elemento -> tipo);
-			
+			imprimir(elemento -> info);
+
 			elemento = elemento -> prox;
 
 		}
