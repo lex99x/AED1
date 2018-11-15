@@ -2,23 +2,75 @@
 #include <stdlib.h>
 #include "lista.h"
 
+struct elemento{
+
+	void* info;
+	Elemento* ant;
+	Elemento* prox;
+
+};
+
+Elemento* criarElemento(void* info){
+
+	Elemento* elemento = (Elemento*) malloc(sizeof(Elemento));
+
+	elemento -> info = info;
+
+	return elemento;
+
+}
+
+struct lista{
+
+	int tam;
+	Elemento* inicio;
+	Elemento* final;
+
+};
+
 Lista* criarLista(void){
 
 	Lista* lista = (Lista*) malloc(sizeof(Lista));
 
-	lista -> quant = 0;
+	lista -> tam = 0;
 	lista -> inicio = lista -> final = NULL;
 
 	return lista;
 
 }
 
-Elemento* criarElemento(void* info){
+void inserirOrdenadoLista(Lista* lista, void* info, Comparador comparador){
 
-	Elemento* elemento = (Elemento*) malloc(sizeof(Elemento));
-	elemento -> info = info;
+	Elemento* ant = NULL;
+	Elemento* aux = lista -> inicio;
 
-	return elemento;
+	while(aux != NULL && comparador(info, aux -> info) >= 0){
+
+		ant = aux;
+		aux = aux -> prox;
+
+	}
+
+	if(ant != NULL && aux != NULL){
+
+		Elemento* elemento = criarElemento(info);
+
+		ant -> prox = elemento;
+		elemento -> ant = ant;
+		elemento -> prox = aux;
+		aux -> ant = elemento;
+
+		lista -> tam++;
+
+	}else if(ant == NULL){
+
+		inserirInicioLista(lista, info);
+
+	}else{
+
+		inserirFinalLista(lista, info);
+
+	}
 
 }
 
@@ -29,11 +81,11 @@ void inserirInicioLista(Lista* lista, void* info){
 	elemento -> ant = NULL;
 	elemento -> prox = lista -> inicio;
 
-	if(lista -> quant == 0) lista -> final = elemento;
+	if(lista -> tam == 0) lista -> final = elemento;
 	else lista -> inicio -> ant = elemento;
 
 	lista -> inicio = elemento;
-	lista -> quant++;
+	lista -> tam++;
 
 }
 
@@ -44,11 +96,11 @@ void inserirFinalLista(Lista* lista, void* info){
 	elemento -> ant = lista -> final;
 	elemento -> prox = NULL;
 
-	if(lista -> quant == 0) lista -> inicio = elemento;
+	if(lista -> tam == 0) lista -> inicio = elemento;
 	else lista -> final -> prox = elemento;
 
 	lista -> final = elemento;
-	lista -> quant++;
+	lista -> tam++;
 
 }
 
@@ -56,7 +108,7 @@ void* removerInicioLista(Lista* lista){
 
 	void* info = NULL;
 
-	if(lista -> quant > 0){
+	if(lista -> tam > 0){
 
 		Elemento* prox = lista -> inicio -> prox;
 		info = lista -> inicio -> info;
@@ -66,7 +118,7 @@ void* removerInicioLista(Lista* lista){
 		if(lista -> inicio == NULL) lista -> final = NULL;
 		else prox -> ant = NULL;
 
-		lista -> quant--;
+		lista -> tam--;
 
 	}
 
@@ -78,7 +130,7 @@ void* removerFinalLista(Lista* lista){
 
 	void* info = NULL;
 
-	if(lista -> quant > 0){
+	if(lista -> tam > 0){
 
 		Elemento* ant = lista -> final -> ant;
 		info = lista -> final -> info;
@@ -88,7 +140,7 @@ void* removerFinalLista(Lista* lista){
 		if(lista -> final == NULL) lista -> inicio = NULL;
 		else ant -> prox = NULL;
 
-		lista -> quant--;
+		lista -> tam--;
 
 	}
 
@@ -96,52 +148,25 @@ void* removerFinalLista(Lista* lista){
 
 }
 
-// void inserirOrdenadoLista(Lista* lista, void* info){
+void percorrerLista(Lista* lista, Callback callback){
 
-// 	Elemento* elemento = lista -> inicio;
-// 	Elemento* ant = NULL;
-
-// 	while(elemento != NULL && (*((int*) elemento -> info) < *((int*) info))){
-
-// 		ant = elemento;
-// 		elemento = elemento -> prox;
-
-// 	}
-
-// 	elemento = criarElemento(info);
-
-// 	if(ant == NULL){
-
-// 		elemento -> prox = lista -> inicio;
-// 		lista -> inicio = elemento;
-
-// 	}else{
-
-// 		elemento -> prox = ant -> prox;
-// 		ant -> prox = elemento;
-
-// 	}
-
-// 	lista -> quant++;
-
-// }
-
-void imprimirLista(Lista* lista, Imprimir imprimir){
-
-	if(lista -> quant > 0){
+	if(lista -> tam > 0){
 
 		Elemento* elemento = lista -> inicio;
 
 		while(elemento != NULL){
 
-			imprimir(elemento -> info);
-
+			callback(elemento -> info);
 			elemento = elemento -> prox;
 
 		}
 
-		printf("\n");
-
 	}
+
+}
+
+int tamanhoLista(Lista* lista){
+
+	return lista -> tam;
 
 }

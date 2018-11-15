@@ -1,44 +1,31 @@
-// TAD: lista duplamente encadeada
+// TAD: Lista Duplamente Encadeada (LDE)
 
+// Definições de tipos auxiliares para a lista
 typedef struct elemento Elemento;
-
-struct elemento{
-
-	void* info;
-	Elemento* ant;
-	Elemento* prox;
-
-};
-
-typedef struct{
-
-	int quant;
-	Elemento* inicio;
-	Elemento* final;
-
-} Lista;
+typedef struct lista Lista;
+typedef void (*Callback)(void*);
+typedef short (*Comparador)(void*, void*);
 
 // Função que aloca e retorna nova lista
 Lista* criarLista(void);
 
-// Função que aloca e retorna novo elemento de lista
-Elemento* criarElemento(void* info);
+// Função que insere novo elemento na lista em ordem crescente
+void inserirOrdenadoLista(Lista* lista, void* info, Comparador comparador);
 
-// Função que insere novo elemento no ínicio da lista passada
+// Função que insere novo elemento no ínicio da lista
 void inserirInicioLista(Lista* lista, void* info);
 
-// Função que insere novo elemento no final da lista passada
+// Função que insere novo elemento no final da lista
 void inserirFinalLista(Lista* lista, void* info);
 
-// Função que remove elemento inicial da lista passada
+// Função que remove primeiro elemento da lista
 void* removerInicioLista(Lista* lista);
 
-// Função que remove elemento final da lista passada
+// Função que remove último elemento da lista
 void* removerFinalLista(Lista* lista);
 
-// Função que insere novo elemento na lista passada em ordem crescente
-// Obs.: só funciona com lista de inteiros, por hora...
-// void inserirOrdenadoLista(Lista* lista, void* info);
+// Função que percorre a lista e aplica a callback para cada elemento
+void percorrerLista(Lista* lista, Callback callback);
 
-// Função que, dada uma lista e uma função de impressão específica, imprime toda a lista
-typedef void (*Imprimir)(void*); void imprimirLista(Lista* lista, Imprimir imprimir);
+// Função que retorna a quantidade de elementos (tamanho) da lista
+int tamanhoLista(Lista* lista);
