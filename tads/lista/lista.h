@@ -1,7 +1,6 @@
 // TAD: Lista Duplamente Encadeada (LDE)
 
 // Definições de tipos auxiliares para a lista
-typedef struct elemento Elemento;
 typedef struct lista Lista;
 typedef void (*Callback)(void*);
 typedef short (*Comparador)(void*, void*);
