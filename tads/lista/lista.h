@@ -8,14 +8,14 @@ typedef short (*Comparador)(void*, void*);
 // Função que aloca e retorna nova lista
 Lista* criarLista(void);
 
-// Função que insere novo elemento na lista em ordem crescente
-void inserirOrdenadoLista(Lista* lista, void* info, Comparador comparador);
-
 // Função que insere novo elemento no ínicio da lista
 void inserirInicioLista(Lista* lista, void* info);
 
 // Função que insere novo elemento no final da lista
 void inserirFinalLista(Lista* lista, void* info);
+
+// Função que insere novo elemento na lista em ordem crescente
+void inserirOrdenadoLista(Lista* lista, void* info, Comparador comparador);
 
 // Função que remove primeiro elemento da lista
 void* removerInicioLista(Lista* lista);
