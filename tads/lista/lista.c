@@ -41,6 +41,36 @@ Lista* criarLista(void){
 
 }
 
+void inserirInicioLista(Lista* lista, void* info){
+
+	Elemento* elemento = criarElemento(info);
+
+	elemento -> ant = NULL;
+	elemento -> prox = lista -> inicio;
+
+	if(lista -> tam == 0) lista -> final = elemento;
+	else lista -> inicio -> ant = elemento;
+
+	lista -> inicio = elemento;
+	lista -> tam++;
+
+}
+
+void inserirFinalLista(Lista* lista, void* info){
+
+	Elemento* elemento = criarElemento(info);
+
+	elemento -> ant = lista -> final;
+	elemento -> prox = NULL;
+
+	if(lista -> tam == 0) lista -> inicio = elemento;
+	else lista -> final -> prox = elemento;
+
+	lista -> final = elemento;
+	lista -> tam++;
+
+}
+
 void inserirOrdenadoLista(Lista* lista, void* info, Comparador comparador){
 
 	Elemento* ant = NULL;
@@ -73,36 +103,6 @@ void inserirOrdenadoLista(Lista* lista, void* info, Comparador comparador){
 		inserirFinalLista(lista, info);
 
 	}
-
-}
-
-void inserirInicioLista(Lista* lista, void* info){
-
-	Elemento* elemento = criarElemento(info);
-
-	elemento -> ant = NULL;
-	elemento -> prox = lista -> inicio;
-
-	if(lista -> tam == 0) lista -> final = elemento;
-	else lista -> inicio -> ant = elemento;
-
-	lista -> inicio = elemento;
-	lista -> tam++;
-
-}
-
-void inserirFinalLista(Lista* lista, void* info){
-
-	Elemento* elemento = criarElemento(info);
-
-	elemento -> ant = lista -> final;
-	elemento -> prox = NULL;
-
-	if(lista -> tam == 0) lista -> inicio = elemento;
-	else lista -> final -> prox = elemento;
-
-	lista -> final = elemento;
-	lista -> tam++;
 
 }
 
