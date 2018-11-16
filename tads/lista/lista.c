@@ -2,13 +2,13 @@
 #include <stdlib.h>
 #include "lista.h"
 
-struct elemento{
+typedef struct{
 
 	void* info;
 	Elemento* ant;
 	Elemento* prox;
 
-};
+} Elemento;
 
 Elemento* criarElemento(void* info){
 
