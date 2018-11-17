@@ -150,6 +150,18 @@ void* removerFinalLista(Lista* lista){
 
 }
 
+void* inicioLista(Lista* lista){
+
+	return lista -> inicio -> info;
+
+}
+
+void* finalLista(Lista* lista){
+
+	return lista -> final -> info;
+
+}
+
 void percorrerLista(Lista* lista, Callback callback){
 
 	if(lista -> tam > 0){
@@ -170,5 +182,11 @@ void percorrerLista(Lista* lista, Callback callback){
 int tamanhoLista(Lista* lista){
 
 	return lista -> tam;
+
+}
+
+short listaVazia(Lista* lista){
+
+	return lista -> tam == 0;
 
 }

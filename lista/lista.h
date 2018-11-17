@@ -23,8 +23,17 @@ void* removerInicioLista(Lista* lista);
 // Função que remove último elemento da lista
 void* removerFinalLista(Lista* lista);
 
+// Função que retorna o primeiro elemento da lista
+void* inicioLista(Lista* lista);
+
+// Função que retorna o último elemento da lista
+void* finalLista(Lista* lista);
+
 // Função que percorre a lista e aplica a callback para cada elemento
 void percorrerLista(Lista* lista, Callback callback);
 
-// Função que retorna a quantidade de elementos (tamanho) da lista
+// Função que retorna a quantidade de elementos da lista
 int tamanhoLista(Lista* lista);
+
+// Função que responde se a lista está vazia
+short listaVazia(Lista* lista);

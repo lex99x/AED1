@@ -4,7 +4,6 @@
 
 struct fila{
 
-	int ocup;
 	Lista* lista;
 
 };
@@ -13,7 +12,6 @@ Fila* criarFila(void){
 
 	Fila* fila = (Fila*) malloc(sizeof(Fila));
 
-	fila -> ocup = 0;
 	fila -> lista = criarLista();
 
 	return fila;
@@ -24,40 +22,34 @@ void enfileirar(Fila* fila, void* info){
 
 	inserirFinalLista(fila -> lista, info);
 
-	fila -> ocup++;
-
 }
 
 void* desenfileirar(Fila* fila){
 
-	void* info = removerInicioLista(fila -> lista);
-
-	if(info != NULL) fila -> ocup--;
-
-	return info;
+	return removerInicioLista(fila -> lista);
 
 }
 
-void* primeiro(Fila* fila){
+void* primeiroFila(Fila* fila){
 
-	return fila -> lista -> inicio -> info;
-
-}
-
-void* ultimo(Fila* fila){
-
-	return fila -> lista -> final -> info;
+	return inicioLista(fila -> lista);
 
 }
 
-int comprimento(Fila* fila){
+void* ultimoFila(Fila* fila){
 
-	return fila -> ocup;
+	return finalLista(fila -> lista);
 
 }
 
-short vazia(Fila* fila){
+int comprimentoFila(Fila* fila){
 
-	return fila -> ocup == 0;
+	return tamanhoLista(fila -> lista);
+
+}
+
+short filaVazia(Fila* fila){
+
+	return listaVazia(fila -> lista);
 
 }
