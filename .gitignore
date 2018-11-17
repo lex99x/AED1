@@ -1,4 +1,3 @@
 *.o
-projeto/bin
-tads/bin
+bin/
 .vscode
