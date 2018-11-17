@@ -71,12 +71,12 @@ void inserirFinalLista(Lista* lista, void* info){
 
 }
 
-void inserirOrdenadoLista(Lista* lista, void* info, Comparador comparador){
+void inserirOrdenadoLista(Lista* lista, void* info, Menor menor){
 
 	Elemento* ant = NULL;
 	Elemento* aux = lista -> inicio;
 
-	while(aux != NULL && comparador(info, aux -> info) >= 0){
+	while(aux != NULL && menor(aux -> info, info)){
 
 		ant = aux;
 		aux = aux -> prox;
@@ -154,12 +154,12 @@ void percorrerLista(Lista* lista, Callback callback){
 
 	if(lista -> tam > 0){
 
-		Elemento* elemento = lista -> inicio;
+		Elemento* aux = lista -> inicio;
 
-		while(elemento != NULL){
+		while(aux != NULL){
 
-			callback(elemento -> info);
-			elemento = elemento -> prox;
+			callback(aux -> info);
+			aux = aux -> prox;
 
 		}
 

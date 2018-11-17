@@ -4,6 +4,14 @@
 #include <math.h>
 #include "array.h"
 
+struct array{
+
+	int tam;
+	int ocup;
+	void** vet;
+
+};
+
 Array* criarArray(int tam){
 
 	Array* array = (Array*) malloc(sizeof(Array));
@@ -40,5 +48,11 @@ void* acessarArray(Array* array, int pos){
 
 	if(pos >= 0 && pos < array -> tam) return array -> vet[pos];
 	else return NULL;
+
+}
+
+int tamanhoArray(Array* array){
+
+	return array -> ocup;
 
 }
