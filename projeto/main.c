@@ -1,14 +1,23 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "../tads/lista/lista.h"
+#include "../lista/lista.h"
 
 typedef struct{
 
-	char tipo;
-	int tempo;
-	void* info;
+	short status;
+	int FA;
 
-} Evento;
+} PDV;
+
+typedef struct{
+
+	int quantPDVsAtuais;
+	int quantPDVsNovos;
+	PDV* PDVsAtuais;
+	PDV* PDVsNovos;
+	int medidaAgilidade;
+
+} Expresso;
 
 typedef struct{
 
@@ -20,19 +29,18 @@ typedef struct{
 
 typedef struct{
 
-	int idPDV;
+	int indicePDV;
 	int duracao;
 
 } Descanso;
 
-short menor(void* a, void* b){
+typedef struct{
 
-	Evento* eventoA = (Evento*) a;
-	Evento* eventoB = (Evento*) b;
+	char tipo;
+	int tempo;
+	void* info;
 
-	return eventoA -> tempo < eventoB -> tempo;
-
-}
+} Evento;
 
 void imprimirCliente(Cliente* cliente){
 
@@ -42,7 +50,7 @@ void imprimirCliente(Cliente* cliente){
 
 void imprimirDescanso(Descanso* descanso){
 
-	printf("%02d %02d\n", descanso -> idPDV, descanso -> duracao);
+	printf("%02d %02d\n", descanso -> indicePDV, descanso -> duracao);
 
 }
 
@@ -61,29 +69,64 @@ void imprimirEvento(void* info){
 
 }
 
-int main(void){
+Expresso* lerExpresso(void){
 
-	// int quantPDVsAtuais;
+	Expresso* expresso = (Expresso*) malloc(sizeof(Expresso));
 
-	// scanf("%d", &quantPDVsAtuais);
+	scanf("%d", &expresso -> quantPDVsAtuais);
 
-	// int FAsAtuais[quantPDVsAtuais];
+	expresso -> PDVsAtuais = (PDV*) malloc(expresso -> quantPDVsAtuais * sizeof(PDV));
 
-	// for(int cont = 0; cont < quantPDVsAtuais; cont++) scanf("%d", &FAsAtuais[cont]);
+	for(int cont = 0; cont < expresso -> quantPDVsAtuais; cont++){
 
-	// int quantPDVsNovos;
+		expresso -> PDVsAtuais[cont].status = 1;
 
-	// scanf("%d", &quantPDVsNovos);
+		scanf("%d", &expresso -> PDVsAtuais[cont].FA);
 
-	// int FAsNovos[quantPDVsNovos];
+	}
 
-	// for(int cont = 0; cont < quantPDVsNovos; cont++) scanf("%d", &FAsNovos[cont]);
+	scanf("%d", &expresso -> quantPDVsNovos);
 
-	// int medidaAgilidade;
+	expresso -> PDVsNovos = (PDV*) malloc(expresso -> quantPDVsNovos * sizeof(int));
 
-	// scanf("%d", &medidaAgilidade);
+	for(int cont = 0; cont < expresso -> quantPDVsNovos; cont++){
 
-	// Leitura de eventos
+		expresso -> PDVsNovos[cont].status = 1;
+
+		scanf("%d", &expresso -> PDVsNovos[cont].FA);
+
+	}
+
+	scanf("%d", &expresso -> medidaAgilidade);
+
+	return expresso;
+
+}
+
+void imprimirExpresso(Expresso* expresso){
+
+	printf("%d\n", expresso -> quantPDVsAtuais);
+
+	for(int cont = 0; cont < expresso -> quantPDVsAtuais; cont++) printf("%d ", expresso -> PDVsAtuais[cont].FA); printf("\n");
+
+	printf("%d\n", expresso -> quantPDVsNovos);
+
+	for(int cont = 0; cont < expresso -> quantPDVsNovos; cont++) printf("%d ", expresso -> PDVsNovos[cont].FA); printf("\n");
+
+	printf("%d\n", expresso -> medidaAgilidade);
+
+}
+
+short menor(void* a, void* b){
+
+	Evento* eventoA = (Evento*) a;
+	Evento* eventoB = (Evento*) b;
+
+	return eventoA -> tempo < eventoB -> tempo;
+
+}
+
+Lista* lerAgenda(void){
 
 	Lista* agenda = criarLista();
 
@@ -107,7 +150,7 @@ int main(void){
 
 			Descanso* descanso = (Descanso*) malloc(sizeof(Descanso));
 
-			scanf("%d %d", &descanso -> idPDV, &descanso -> duracao);
+			scanf("%d %d", &descanso -> indicePDV, &descanso -> duracao);
 
 			evento -> info = descanso;
 
@@ -123,7 +166,41 @@ int main(void){
 
 	free(evento);
 
+	return agenda;
+
+}
+
+void imprimirAgenda(Lista* agenda){
+
 	percorrerLista(agenda, imprimirEvento);
+
+}
+
+short agendaVazia(Lista* agenda){
+
+	return listaVazia(agenda);
+
+}
+
+void* proximoEventoAgenda(Lista* agenda){
+
+	return removerInicioLista(agenda);
+
+}
+
+int main(void){
+
+	// Expresso* expresso = lerExpresso();
+
+	// imprimirExpresso(expresso);
+
+	Lista* agenda = lerAgenda();
+
+	while(!agendaVazia(agenda)) proximoEventoAgenda(agenda);
+
+	printf("%d\n", agendaVazia(agenda));
+
+	// imprimirAgenda(agenda);
 
 	return 0;
 
