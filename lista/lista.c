@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <stdlib.h>
 #include "lista.h"
 
@@ -71,12 +70,12 @@ void inserirFinalLista(Lista* lista, void* info){
 
 }
 
-void inserirOrdenadoLista(Lista* lista, void* info, Menor menor){
+void inserirOrdenadoLista(Lista* lista, void* info, Comparador comparador){
 
 	Elemento* ant = NULL;
 	Elemento* aux = lista -> inicio;
 
-	while(aux != NULL && menor(aux -> info, info)){
+	while(aux != NULL && comparador(aux -> info, info)){
 
 		ant = aux;
 		aux = aux -> prox;

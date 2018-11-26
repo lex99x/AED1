@@ -3,7 +3,7 @@
 // Definições de tipos auxiliares para a lista
 typedef struct lista Lista;
 typedef void (*Callback)(void*);
-typedef short (*Menor)(void*, void*);
+typedef short (*Comparador)(void*, void*);
 
 // Função que aloca e retorna nova lista
 Lista* criarLista(void);
@@ -15,7 +15,7 @@ void inserirInicioLista(Lista* lista, void* info);
 void inserirFinalLista(Lista* lista, void* info);
 
 // Função que insere novo elemento na lista em ordem crescente
-void inserirOrdenadoLista(Lista* lista, void* info, Menor menor);
+void inserirOrdenadoLista(Lista* lista, void* info, Comparador comparador);
 
 // Função que remove primeiro elemento da lista
 void* removerInicioLista(Lista* lista);

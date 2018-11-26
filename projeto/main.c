@@ -1,21 +1,21 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "../lista/lista.h"
+#include "agenda.h"
 
 typedef struct{
 
 	short status;
 	int FA;
 
-} PDV;
+} Caixa;
 
 typedef struct{
 
-	int quantPDVsAtuais;
-	int quantPDVsNovos;
-	PDV* PDVsAtuais;
-	PDV* PDVsNovos;
+	int quantCaixasAtuais;
+	int quantCaixasNovos;
+	Caixa* caixas;
 	int medidaAgilidade;
+	int X, Y, Z;
 
 } Expresso;
 
@@ -29,28 +29,42 @@ typedef struct{
 
 typedef struct{
 
-	int indicePDV;
+	Caixa* caixa;
+	Cliente* cliente;
+
+} FinalAtendimento;
+
+typedef struct{
+
+	int indiceCaixa;
 	int duracao;
 
 } Descanso;
 
 typedef struct{
 
-	char tipo;
-	int tempo;
-	void* info;
+	Caixa* caixa;
 
-} Evento;
+} FinalDescanso;
 
-void imprimirCliente(Cliente* cliente){
+typedef struct{
 
-	printf("%02d %02d %02d\n", cliente -> quantItens, cliente -> tipo, cliente -> tempoPag);
+	int tempoMedio;
+	int tempoMaximo;
+	int quantPerdas2;
+	int quantPerdas3;
 
-}
+} Desempenho;
 
-void imprimirDescanso(Descanso* descanso){
+Caixa* caixaLivre(Expresso* expresso){
 
-	printf("%02d %02d\n", descanso -> indicePDV, descanso -> duracao);
+	int quantCaixas = expresso -> quantCaixasAtuais + expresso -> quantCaixasNovos;
+
+	for(int cont = 0; cont < quantCaixas; cont++){
+
+		if(expresso -> caixas[cont].status) return &expresso -> caixas[cont];
+
+	}
 
 }
 
@@ -58,12 +72,17 @@ void imprimirEvento(void* info){
 
 	Evento* evento = (Evento*) info;
 
-	printf("%c %02d ", evento -> tipo, evento -> tempo);
+	printf("%c %lf ", evento -> tipo, evento -> tempo);
 
-	switch(evento -> tipo){
+	if(evento -> tipo == 'C'){
 
-		case 'C': imprimirCliente((Cliente*) evento -> info); break;
-		case 'S': imprimirDescanso((Descanso*) evento -> info); break;
+		Cliente* cliente = (Cliente*) evento -> info;
+		printf("%02d %02d %02d\n", cliente -> quantItens, cliente -> tipo, cliente -> tempoPag);
+
+	}else{
+
+		Descanso* descanso = (Descanso*) evento -> info;
+		printf("%02d %02d\n", descanso -> indiceCaixa, descanso -> duracao);
 
 	}
 
@@ -73,31 +92,31 @@ Expresso* lerExpresso(void){
 
 	Expresso* expresso = (Expresso*) malloc(sizeof(Expresso));
 
-	scanf("%d", &expresso -> quantPDVsAtuais);
+	scanf("%d", &expresso -> quantCaixasAtuais);
 
-	expresso -> PDVsAtuais = (PDV*) malloc(expresso -> quantPDVsAtuais * sizeof(PDV));
+	expresso -> caixas = (Caixa*) malloc(expresso -> quantCaixasAtuais * sizeof(Caixa));
 
-	for(int cont = 0; cont < expresso -> quantPDVsAtuais; cont++){
+	for(int cont = 0; cont < expresso -> quantCaixasAtuais; cont++){
 
-		expresso -> PDVsAtuais[cont].status = 1;
-
-		scanf("%d", &expresso -> PDVsAtuais[cont].FA);
-
-	}
-
-	scanf("%d", &expresso -> quantPDVsNovos);
-
-	expresso -> PDVsNovos = (PDV*) malloc(expresso -> quantPDVsNovos * sizeof(int));
-
-	for(int cont = 0; cont < expresso -> quantPDVsNovos; cont++){
-
-		expresso -> PDVsNovos[cont].status = 1;
-
-		scanf("%d", &expresso -> PDVsNovos[cont].FA);
+		expresso -> caixas[cont].status = 1;
+		scanf("%d", &expresso -> caixas[cont].FA);
 
 	}
 
-	scanf("%d", &expresso -> medidaAgilidade);
+	scanf("%d", &expresso -> quantCaixasNovos);
+
+	int quantCaixas = expresso -> quantCaixasAtuais + expresso -> quantCaixasNovos;
+
+	expresso -> caixas = (Caixa*) realloc(expresso -> caixas, quantCaixas * sizeof(Caixa));
+
+	for(int cont = expresso -> quantCaixasAtuais; cont < quantCaixas; cont++){
+
+		expresso -> caixas[cont].status = 1;
+		scanf("%d", &expresso -> caixas[cont].FA);
+
+	}
+
+	scanf("%d %d %d %d", &expresso -> medidaAgilidade, &expresso -> X, &expresso -> Y, &expresso -> Z);
 
 	return expresso;
 
@@ -105,60 +124,107 @@ Expresso* lerExpresso(void){
 
 void imprimirExpresso(Expresso* expresso){
 
-	printf("%d\n", expresso -> quantPDVsAtuais);
+	int quantCaixas = expresso -> quantCaixasAtuais + expresso -> quantCaixasNovos;
 
-	for(int cont = 0; cont < expresso -> quantPDVsAtuais; cont++) printf("%d ", expresso -> PDVsAtuais[cont].FA); printf("\n");
+	printf("%d ", expresso -> quantCaixasAtuais);
 
-	printf("%d\n", expresso -> quantPDVsNovos);
+	for(int cont = 0; cont < expresso -> quantCaixasAtuais; cont++){
 
-	for(int cont = 0; cont < expresso -> quantPDVsNovos; cont++) printf("%d ", expresso -> PDVsNovos[cont].FA); printf("\n");
+		printf("%d ", expresso -> caixas[cont].FA);
 
-	printf("%d\n", expresso -> medidaAgilidade);
+	}
+
+	printf("\n%d ", expresso -> quantCaixasNovos);
+
+	for(int cont = expresso -> quantCaixasAtuais; cont < quantCaixas; cont++){
+
+		printf("%d ", expresso -> caixas[cont].FA);
+
+	}
+
+	printf("\n%d\n%d %d %d\n", expresso -> medidaAgilidade, expresso -> X, expresso -> Y, expresso -> Z);
 
 }
 
-short menor(void* a, void* b){
+int main(void){
 
-	Evento* eventoA = (Evento*) a;
-	Evento* eventoB = (Evento*) b;
+	Expresso* expresso = lerExpresso();
 
-	return eventoA -> tempo < eventoB -> tempo;
+	// imprimirExpresso(expresso);
 
-}
-
-Lista* lerAgenda(void){
-
-	Lista* agenda = criarLista();
-
-	Evento* evento = (Evento*) malloc(sizeof(Evento));
+	Agenda* agenda = criarAgenda();
+	Evento* evento = criarEvento();
+	Cliente* cliente; Descanso* descanso; Caixa* caixa;
 
 	scanf(" %c", &evento -> tipo);
 
 	while(evento -> tipo != 'F'){
 
-		scanf("%d", &evento -> tempo);
+		scanf("%lf", &evento -> tempo);
 
 		if(evento -> tipo == 'C'){
 
-			Cliente* cliente = (Cliente*) malloc(sizeof(Cliente));
-
+			cliente = (Cliente*) malloc(sizeof(Cliente));
 			scanf("%d %d %d", &cliente -> quantItens, &cliente -> tipo, &cliente -> tempoPag);
-
 			evento -> info = cliente;
 
 		}else{
 
-			Descanso* descanso = (Descanso*) malloc(sizeof(Descanso));
-
-			scanf("%d %d", &descanso -> indicePDV, &descanso -> duracao);
-
+			descanso = (Descanso*) malloc(sizeof(Descanso));
+			scanf("%d %d", &descanso -> indiceCaixa, &descanso -> duracao);
 			evento -> info = descanso;
 
 		}
 
-		inserirOrdenadoLista(agenda, evento, menor);
+		inserirEventoAgenda(agenda, evento);
 
-		evento = (Evento*) malloc(sizeof(Evento));
+		while(!agendaVazia(agenda)){
+
+			evento = proximoEventoAgenda(agenda);
+
+			double relogio = evento -> tempo;
+
+			if(evento -> tipo == 'C'){
+
+				cliente = (Cliente*) evento -> info;
+				caixa = caixaLivre(expresso);
+				caixa -> status = 0;
+
+				evento = criarEvento();
+
+				evento -> tipo = 'E';
+				evento -> tempo = relogio + expresso -> medidaAgilidade * caixa -> FA * cliente -> quantItens + cliente -> tempoPag;
+
+				FinalAtendimento* finalAtendimento = (FinalAtendimento*) malloc(sizeof(FinalAtendimento));
+				finalAtendimento -> caixa = caixa;
+				finalAtendimento -> cliente = cliente;
+
+				evento -> info = finalAtendimento;
+
+				inserirEventoAgenda(agenda, evento);
+
+			}else if(evento -> tipo == 'S'){
+
+				descanso = (Descanso*) evento -> info;
+				caixa = &expresso -> caixas[descanso -> indiceCaixa];
+				caixa -> status = 0;
+
+				FinalDescanso* finalDescanso = (FinalDescanso*) malloc(sizeof(FinalDescanso));
+				finalDescanso -> caixa = caixa;
+
+				evento = criarEvento();
+
+				evento -> tipo = 'R';
+				evento -> tempo = relogio + descanso -> duracao * 60000.0;
+				evento -> info = finalDescanso;
+
+				inserirEventoAgenda(agenda, evento);
+
+			}
+
+		}
+
+		evento = criarEvento();
 
 		scanf(" %c", &evento -> tipo);
 
@@ -166,41 +232,11 @@ Lista* lerAgenda(void){
 
 	free(evento);
 
-	return agenda;
+	// imprimirEventosAgenda(agenda, imprimirEvento);
 
-}
+	// while(!agendaVazia(agenda)) proximoEventoAgenda(agenda);
 
-void imprimirAgenda(Lista* agenda){
-
-	percorrerLista(agenda, imprimirEvento);
-
-}
-
-short agendaVazia(Lista* agenda){
-
-	return listaVazia(agenda);
-
-}
-
-void* proximoEventoAgenda(Lista* agenda){
-
-	return removerInicioLista(agenda);
-
-}
-
-int main(void){
-
-	// Expresso* expresso = lerExpresso();
-
-	// imprimirExpresso(expresso);
-
-	Lista* agenda = lerAgenda();
-
-	while(!agendaVazia(agenda)) proximoEventoAgenda(agenda);
-
-	printf("%d\n", agendaVazia(agenda));
-
-	// imprimirAgenda(agenda);
+	// printf("%d\n", tamanhoAgenda(agenda));
 
 	return 0;
 
