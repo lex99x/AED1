@@ -1,6 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "agenda.h"
+#include "../fila/fila.h"
+
+typedef struct{
+
+	int quantCaixasAtuais;
+	int quantCaixasNovos;
+	int agilidade;
+	int X, Y, Z;
+
+} Config;
 
 typedef struct{
 
@@ -11,11 +21,10 @@ typedef struct{
 
 typedef struct{
 
-	int quantCaixasAtuais;
-	int quantCaixasNovos;
+	double relogio;
 	Caixa* caixas;
-	int medidaAgilidade;
-	int X, Y, Z;
+	Fila* fila;
+	Config* config;
 
 } Expresso;
 
@@ -32,7 +41,14 @@ typedef struct{
 	Caixa* caixa;
 	Cliente* cliente;
 
-} FinalAtendimento;
+} InicioAtendimento;
+
+typedef struct{
+
+	Caixa* caixa;
+	Cliente* cliente;
+
+} FimAtendimento;
 
 typedef struct{
 
@@ -56,93 +72,117 @@ typedef struct{
 
 } Desempenho;
 
-Caixa* caixaLivre(Expresso* expresso){
+// Caixa* caixaLivre(Expresso* expresso){
 
-	int quantCaixas = expresso -> quantCaixasAtuais + expresso -> quantCaixasNovos;
+// 	int quantCaixas = expresso -> quantCaixasAtuais + expresso -> quantCaixasNovos;
 
-	for(int cont = 0; cont < quantCaixas; cont++){
+// 	for(int cont = 0; cont < quantCaixas; cont++){
 
-		if(expresso -> caixas[cont].status) return &expresso -> caixas[cont];
+// 		if(expresso -> caixas[cont].status) return &expresso -> caixas[cont];
 
-	}
+// 	}
 
-}
+// 	return NULL;
 
-void imprimirEvento(void* info){
+// }
 
-	Evento* evento = (Evento*) info;
+// void imprimirEvento(void* info){
 
-	printf("%c %lf ", evento -> tipo, evento -> tempo);
+// 	Evento* evento = (Evento*) info;
 
-	if(evento -> tipo == 'C'){
+// 	printf("%c %lf ", evento -> tipo, evento -> tempo);
 
-		Cliente* cliente = (Cliente*) evento -> info;
-		printf("%02d %02d %02d\n", cliente -> quantItens, cliente -> tipo, cliente -> tempoPag);
+// 	if(evento -> tipo == 'C'){
 
-	}else{
+// 		Cliente* cliente = (Cliente*) evento -> info;
+// 		printf("%02d %02d %02d\n", cliente -> quantItens, cliente -> tipo, cliente -> tempoPag);
 
-		Descanso* descanso = (Descanso*) evento -> info;
-		printf("%02d %02d\n", descanso -> indiceCaixa, descanso -> duracao);
+// 	}else{
 
-	}
+// 		Descanso* descanso = (Descanso*) evento -> info;
+// 		printf("%02d %02d\n", descanso -> indiceCaixa, descanso -> duracao);
+
+// 	}
+
+// }
+
+// void imprimirExpresso(Expresso* expresso){
+
+// 	int quantCaixas = expresso -> quantCaixasAtuais + expresso -> quantCaixasNovos;
+
+// 	printf("%d ", expresso -> quantCaixasAtuais);
+
+// 	for(int cont = 0; cont < expresso -> quantCaixasAtuais; cont++){
+
+// 		printf("%d ", expresso -> caixas[cont].FA);
+
+// 	}
+
+// 	printf("\n%d ", expresso -> quantCaixasNovos);
+
+// 	for(int cont = expresso -> quantCaixasAtuais; cont < quantCaixas; cont++){
+
+// 		printf("%d ", expresso -> caixas[cont].FA);
+
+// 	}
+
+// 	printf("\n%d\n%d %d %d\n", expresso -> agilidade, expresso -> X, expresso -> Y, expresso -> Z);
+
+// }
+
+void agendarFinalAtendimento(Agenda* agenda, int relogio, int agilidade, Caixa* caixa, Cliente* cliente){
+
+	Evento* evento = (Evento*) malloc(sizeof(Evento));
+
+	evento -> tipo = 'E';
+	evento -> tempo = relogio + agilidade * caixa -> FA * cliente -> quantItens + cliente -> tempoPag;
+
+	FimAtendimento* fimAtendimento = (FimAtendimento*) malloc(sizeof(FimAtendimento));
+	fimAtendimento -> caixa = caixa;
+	fimAtendimento -> cliente = cliente;
+
+	evento -> info = fimAtendimento;
+
+	inserirEventoAgenda(agenda, evento);
 
 }
 
 Expresso* lerExpresso(void){
 
 	Expresso* expresso = (Expresso*) malloc(sizeof(Expresso));
+	Config* config = (Config*) malloc(sizeof(Config));
 
-	scanf("%d", &expresso -> quantCaixasAtuais);
+	scanf("%d", &config -> quantCaixasAtuais);
 
-	expresso -> caixas = (Caixa*) malloc(expresso -> quantCaixasAtuais * sizeof(Caixa));
+	expresso -> caixas = (Caixa*) malloc(config -> quantCaixasAtuais * sizeof(Caixa));
 
-	for(int cont = 0; cont < expresso -> quantCaixasAtuais; cont++){
+	for(int i = 0; i < config -> quantCaixasAtuais; i++){
 
-		expresso -> caixas[cont].status = 1;
-		scanf("%d", &expresso -> caixas[cont].FA);
+		expresso -> caixas[i].status = 1;
+		scanf("%d", &expresso -> caixas[i].FA);
 
 	}
 
-	scanf("%d", &expresso -> quantCaixasNovos);
+	scanf("%d", &config -> quantCaixasNovos);
 
-	int quantCaixas = expresso -> quantCaixasAtuais + expresso -> quantCaixasNovos;
+	int quantCaixas = config -> quantCaixasAtuais + config -> quantCaixasNovos;
 
 	expresso -> caixas = (Caixa*) realloc(expresso -> caixas, quantCaixas * sizeof(Caixa));
 
-	for(int cont = expresso -> quantCaixasAtuais; cont < quantCaixas; cont++){
+	for(int cont = config -> quantCaixasAtuais; cont < quantCaixas; cont++){
 
 		expresso -> caixas[cont].status = 1;
 		scanf("%d", &expresso -> caixas[cont].FA);
 
 	}
 
-	scanf("%d %d %d %d", &expresso -> medidaAgilidade, &expresso -> X, &expresso -> Y, &expresso -> Z);
+	scanf("%d %d %d %d", &config -> agilidade, &config -> X, &config -> Y, &config -> Z);
+
+	expresso -> relogio = 0.0;
+	expresso -> fila = criarFila();
+	expresso -> config = config;
 
 	return expresso;
-
-}
-
-void imprimirExpresso(Expresso* expresso){
-
-	int quantCaixas = expresso -> quantCaixasAtuais + expresso -> quantCaixasNovos;
-
-	printf("%d ", expresso -> quantCaixasAtuais);
-
-	for(int cont = 0; cont < expresso -> quantCaixasAtuais; cont++){
-
-		printf("%d ", expresso -> caixas[cont].FA);
-
-	}
-
-	printf("\n%d ", expresso -> quantCaixasNovos);
-
-	for(int cont = expresso -> quantCaixasAtuais; cont < quantCaixas; cont++){
-
-		printf("%d ", expresso -> caixas[cont].FA);
-
-	}
-
-	printf("\n%d\n%d %d %d\n", expresso -> medidaAgilidade, expresso -> X, expresso -> Y, expresso -> Z);
 
 }
 
@@ -168,6 +208,8 @@ int main(void){
 			scanf("%d %d %d", &cliente -> quantItens, &cliente -> tipo, &cliente -> tempoPag);
 			evento -> info = cliente;
 
+			enfileirar(expresso -> fila, cliente);
+
 		}else{
 
 			descanso = (Descanso*) malloc(sizeof(Descanso));
@@ -178,51 +220,61 @@ int main(void){
 
 		inserirEventoAgenda(agenda, evento);
 
-		while(!agendaVazia(agenda)){
+		// while(!agendaVazia(agenda)){
 
-			evento = proximoEventoAgenda(agenda);
+		evento = proximoEventoAgenda(agenda);
 
-			double relogio = evento -> tempo;
+		double relogio = evento -> tempo;
 
-			if(evento -> tipo == 'C'){
+		if(evento -> tipo == 'C'){
 
-				cliente = (Cliente*) evento -> info;
-				caixa = caixaLivre(expresso);
-				caixa -> status = 0;
+			caixa = caixaLivre(expresso);
 
-				evento = criarEvento();
+			if(caixa != NULL){
 
-				evento -> tipo = 'E';
-				evento -> tempo = relogio + expresso -> medidaAgilidade * caixa -> FA * cliente -> quantItens + cliente -> tempoPag;
+				cliente = (Cliente*) desenfileirar(expresso -> fila);
 
-				FinalAtendimento* finalAtendimento = (FinalAtendimento*) malloc(sizeof(FinalAtendimento));
-				finalAtendimento -> caixa = caixa;
-				finalAtendimento -> cliente = cliente;
+				// int espera = - relogio;
 
-				evento -> info = finalAtendimento;
+				if(
 
-				inserirEventoAgenda(agenda, evento);
+					(cliente -> tipo == 1) ||
+					(cliente -> tipo == 2 && espera <= expresso -> config -> X) ||
+					(cliente -> tipo == 3 && espera <= expresso -> config -> Y)
 
-			}else if(evento -> tipo == 'S'){
+				){
 
-				descanso = (Descanso*) evento -> info;
-				caixa = &expresso -> caixas[descanso -> indiceCaixa];
-				caixa -> status = 0;
+					agendarFinalAtendimento(agenda, expresso -> relogio,
+					expresso -> config -> agilidade, caixa, cliente);
 
-				FinalDescanso* finalDescanso = (FinalDescanso*) malloc(sizeof(FinalDescanso));
-				finalDescanso -> caixa = caixa;
-
-				evento = criarEvento();
-
-				evento -> tipo = 'R';
-				evento -> tempo = relogio + descanso -> duracao * 60000.0;
-				evento -> info = finalDescanso;
-
-				inserirEventoAgenda(agenda, evento);
+				}
 
 			}
 
+		}else if(evento -> tipo == 'S'){
+
+			descanso = (Descanso*) evento -> info;
+			caixa = &expresso -> caixas[descanso -> indiceCaixa];
+			caixa -> status = 0;
+
+			FinalDescanso* finalDescanso = (FinalDescanso*) malloc(sizeof(FinalDescanso));
+			finalDescanso -> caixa = caixa;
+
+			evento = criarEvento();
+
+			evento -> tipo = 'R';
+			evento -> tempo = relogio + descanso -> duracao * 60000.0;
+			evento -> info = finalDescanso;
+
+			inserirEventoAgenda(agenda, evento);
+
+		}else if(evento -> tipo == 'E'){
+
+
+
 		}
+
+		// }
 
 		evento = criarEvento();
 
