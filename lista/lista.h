@@ -32,7 +32,7 @@ void* finalLista(Lista* lista);
 // Função que percorre a lista e aplica a callback para cada elemento
 void percorrerLista(Lista* lista, Callback callback);
 
-// Função que retorna a quantidade de elementos da lista
+// Função que retorna a quantidade de elementos (tamanho) da lista
 int tamanhoLista(Lista* lista);
 
 // Função que responde se a lista está vazia
