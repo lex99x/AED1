@@ -25,9 +25,11 @@
 
 int main(void){
 
-	double area = 0.0, custo = 0.0, adubo = 0.0, valor = 0.0;
+	int area;
 
-	scanf("%lf", &area);
+	scanf("%d", &area);
+
+	double custo, adubo;
 
 	if(area >= 0 && area <= 100){
 
@@ -51,7 +53,7 @@ int main(void){
 
 	}
 
-	valor = area * custo + adubo;
+	double valor = area * custo + adubo;
 
 	printf("%.1lf\n", valor);
 

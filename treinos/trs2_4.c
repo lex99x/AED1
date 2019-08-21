@@ -14,29 +14,31 @@
 
 #include <stdio.h>
 
-int menor(int x, int y){
-
-	return (x < y ? x : y);
-
-}
-
-int maior(int x, int y){
-
-	return (x > y ? x : y);
-
-}
-
 int main(void){
 
-	int a = 0, b = 0, c = 0, d = 0, bool = 0;
-	int maiorAB = 0, menorAB = 0, maiorCD = 0, menorCD = 0;
+	int maiorAB, menorAB, maiorCD, menorCD, aux;
 
-	scanf("%d %d %d %d", &a, &b, &c, &d);
+	scanf("%d %d", &maiorAB, &menorAB);
 
-	maiorAB = maior(a, b); menorAB = menor(a, b);
-	maiorCD = maior(c, d); menorCD = menor(c, d);
+	if(menorAB > maiorAB){
 
-	bool = (maiorAB >= menorCD && menorAB <= maiorCD) || (maiorCD >= menorAB && menorCD <= maiorAB);
+		aux = maiorAB;
+		maiorAB = menorAB;
+		menorAB = aux;
+
+	}
+
+	scanf("%d %d", &maiorCD, &menorCD);
+
+	if(menorCD > maiorCD){
+
+		aux = maiorCD;
+		maiorCD = menorCD;
+		menorCD = aux;
+
+	}
+
+	short bool = (maiorAB >= menorCD && menorAB <= maiorCD) || (maiorCD >= menorAB & menorCD <= maiorAB);
 
 	printf("%d\n", bool);
 

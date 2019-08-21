@@ -42,45 +42,54 @@
 #define INVESTIMENTO 1000000
 #define CAPACIDADE 80
 #define CUSTO 4800
+#define PRECO_NORMAL 100
+#define PRECO_DIFERENCIADO 140
 
 short validarModelo(char modelo[13]){
 
-	return !strcmp(modelo, "Normal") || !strcmp(modelo, "Diferenciado");
+	return (strcmp(modelo, "Normal") == 0) || (strcmp(modelo, "Diferenciado") == 0);
 
 }
 
 int main(void){
 
-	int quantViagens = 0, preco = 0, despesas = 0, semanas = 0, receita = 0;
-	double percentual = 0.0;
 	char modelo[13];
+	int quantViagens;
 
 	scanf(" %s", modelo);
 	scanf("%d", &quantViagens);
 
 	if(validarModelo(modelo)){
 
-		if(!strcmp(modelo, "Normal")){
+		double preco, percentual;
 
-			preco = 100;
+		if(strcmp(modelo, "Normal") == 0){
 
-			if(quantViagens == 2) percentual = 1.0;
+			preco = PRECO_NORMAL;
 
-			if(quantViagens == 4) percentual = 0.8;
+			switch(quantViagens){
+
+				case 2: percentual = 1.0; break;
+				case 4: percentual = 0.8; break;
+
+			}
 
 		}else{
 
-			preco = 140;
+			preco = PRECO_DIFERENCIADO;
 
-			if(quantViagens == 2) percentual = 0.9;
+			switch(quantViagens){
 
-			if(quantViagens == 4) percentual = 0.7;
+				case 2: percentual = 0.9; break;
+				case 4: percentual = 0.7; break;
+
+			}
 
 		}
 
-		receita = CAPACIDADE * percentual * quantViagens * preco * 2;
-		despesas = quantViagens * CUSTO;
-		semanas = INVESTIMENTO/(receita - despesas);
+		double receita = CAPACIDADE * percentual * quantViagens * preco * 2;
+		int despesas = quantViagens * CUSTO;
+		int semanas = INVESTIMENTO/(receita - despesas);
 
 		printf("%d semana(s)\n", semanas);
 

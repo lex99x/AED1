@@ -20,44 +20,31 @@
 // 5.26
 
 #include <stdio.h>
+#include <stdlib.h>
+#define FATOR_REDUCAO_1 0.3
+#define FATOR_REDUCAO_2 0.15
 
 int main(void){
 
-	double dif = 0.0, somaNota = 0.0, somaPeso = 0.0, media = 0.0, notas[4], pesos[] = {1, 1, 1, 1};
-	int i;
+	double n1, n2, n3, n4;
+	double p1 = 1.0, p2 = 1.0, p3 = 1.0, p4 = 1.0;
 
-	scanf("%lf", &notas[i]);
+	scanf("%lf %lf", &n1, &n2);
 
-	for(i = 1; i <= 3; i++){
+	if((n2 - n1) < -3.0) p2 -= FATOR_REDUCAO_1;
+	else if((n2 - n1) > 3.0) p1 -= FATOR_REDUCAO_2;
 
-		scanf("%lf", &notas[i]);
+	scanf("%lf", &n3);
 
-		dif = notas[i] - notas[i - 1];
+	if((n3 - n2) < -3.0) p3 -= FATOR_REDUCAO_1;
+	else if(((n3 - n2) > 3.0) && p2 == 1) p2 -= FATOR_REDUCAO_2;
 
-		if(i == 1){
+	scanf("%lf", &n4);
 
-			if(dif < -3) pesos[i] -= 0.3;
+	if((n4 - n3) < -3.0) p4 -= FATOR_REDUCAO_1;
+	else if(((n4 - n3) > 3.0) && p3 == 1) p3 -= FATOR_REDUCAO_2;
 
-			if(dif > 3) pesos[i - 1] -= 0.15;
-
-		}else{
-
-			if(dif < -3) pesos[i] -= 0.3;
-
-			if(dif > 3 && pesos[i - 1] == 1) pesos[i - 1] -= 0.15;
-
-		}
-
-	}
-
-	for(i = 0; i <= 3; i++){
-
-		somaNota += notas[i] * pesos[i];
-		somaPeso += pesos[i];
-
-	}
-
-	media = somaNota/somaPeso;
+	double media = (n1 * p1 + n2 * p2 + n3 * p3 + n4 * p4)/(p1 + p2 + p3 + p4);
 
 	printf("%.2lf\n", media);
 

@@ -42,7 +42,7 @@
 #include <stdio.h>
 #include <string.h>
 #define INVESTIMENTO 1000000
-#define CUSTO_KM 10
+#define CUSTO_POR_KM 10
 #define PRECO_EXECUTIVO 100
 #define PRECO_VIP 200
 #define DIST_PARINTINS 446
@@ -50,42 +50,49 @@
 
 short validarDestino(char destino[25]){
 
-	return !strcmp(destino, "Parintins") || !strcmp(destino, "Coari");
+	return (strcmp(destino, "Parintins") == 0) || (strcmp(destino, "Coari") == 0);
 
 }
 
 int main(void){
 
-	int quantViagens = 0, semanas = 0, receita = 0, despesas = 0, dist = 0,
-	poltronasExecutivas = 0, poltronasVIP = 0;
 	char destino[25];
+	int quantViagens;
 
 	scanf(" %s", destino);
 	scanf("%d", &quantViagens);
 
 	if(validarDestino(destino)){
 
-		if(!strcmp(destino, "Parintins")){
+		int dist, poltronasExecutivas, poltronasVIP;
+
+		if(strcmp(destino, "Parintins") == 0){
 
 			dist = DIST_PARINTINS;
 
-			if(quantViagens == 2) poltronasExecutivas = 64; poltronasVIP = 13;
+			switch(quantViagens){
 
-			if(quantViagens == 3) poltronasExecutivas = 42; poltronasVIP = 12;
+				case 2: poltronasExecutivas = 64; poltronasVIP = 13; break;
+				case 3: poltronasExecutivas = 42; poltronasVIP = 12; break;
+
+			}
 
 		}else{
 
 			dist = DIST_COARI;
 
-			if(quantViagens == 2) poltronasExecutivas = 60; poltronasVIP = 16;
+			switch(quantViagens){
 
-			if(quantViagens == 3) poltronasExecutivas = 52; poltronasVIP = 11;
+				case 2: poltronasExecutivas = 60; poltronasVIP = 16; break;
+				case 3: poltronasExecutivas = 52; poltronasVIP = 11; break;
+
+			}
 
 		}
 
-		receita = (poltronasExecutivas * PRECO_EXECUTIVO + poltronasVIP * PRECO_VIP) * quantViagens * 2;
-		despesas = dist * quantViagens * CUSTO_KM * 2;
-		semanas = INVESTIMENTO/(receita - despesas);
+		int receita = (poltronasExecutivas * PRECO_EXECUTIVO + poltronasVIP * PRECO_VIP) * quantViagens * 2;
+		int despesas = dist * quantViagens * CUSTO_POR_KM * 2;
+		int semanas = INVESTIMENTO/(receita - despesas);
 
 		printf("%d semana(s)\n", semanas);
 
