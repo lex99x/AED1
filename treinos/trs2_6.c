@@ -30,14 +30,14 @@ int main(void){
 
 	scanf("%lf", &aux);
 
-	media += aux;
+	media = media + aux;
 
 	if(aux > maior) maior = aux;
 	else if(aux < menor) menor = aux;
 
 	scanf("%lf", &aux);
 
-	media += aux;
+	media = media + aux;
 
 	if(aux > maior) maior = aux;
 	else if(aux < menor) menor = aux;

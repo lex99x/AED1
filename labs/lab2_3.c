@@ -16,57 +16,58 @@
 
 int main(void){
 
-	double maior, menor, S2M, nota;
+	double maior, menor, m2m, aux;
 
 	scanf("%lf %lf", &maior, &menor);
 
 	if(menor > maior){
 
-		S2M = maior;
+		aux = maior;
 		maior = menor;
-		menor = S2M;
+		menor = aux;
 
 	}
 
-	scanf("%lf", &nota);
+	scanf("%lf", &aux);
 
-	if(nota <= menor){
+	if(aux > maior){
 
-		S2M = menor;
-		menor = nota;
+		m2m = maior;
+		maior = aux;
 
-	}else if(nota >= maior){
+	}else if(aux < menor){
 
-		S2M = maior;
-		maior = nota;
+		m2m = menor;
+		menor = aux;
 
 	}else{
 
-		S2M = nota;
+		m2m = aux;
 
 	}
 
-	scanf("%lf", &nota);
+	scanf("%lf", &aux);
 
-	if(nota <= menor){
+	if(aux < menor){
 
-		S2M += menor;
-		menor = nota;
+		m2m = m2m + menor;
+		menor = aux;
 
-	}else if(nota >= maior){
+	}else if(aux > maior){
 
-		S2M += maior;
-		maior = nota;
+		m2m = m2m + maior;
+		maior = aux;
 
 	}else{
 
-		S2M += nota;
+		m2m = m2m + aux;
 
 	}
 
-	nota = (4.0 * S2M + maior + menor)/10.0;
+	m2m = m2m/2.0;
+	aux = (m2m * 8.0 + maior + menor)/10.0;
 
-	printf("%.2lf\n", nota);
+	printf("%.2lf\n", aux);
 
 	return 0;
 
