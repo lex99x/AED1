@@ -1,64 +1,67 @@
 // Enunciado
-// Seja S uma sequência de números inteiros onde se registrou, ao longo do dia,
-// as mudanças de temperatura em uma adega. Para se estimar a temperatura média
-// da sala, além do cálculo convencional de média aritmética, decidiu-se excluir
-// da sequência os outliners , isto é, a menor e a maior temperatura evitando assim
-// que eles afetem a média. Implemente um programa que resolva este problema,
-// considerando que uma temperatura de 500 graus indica o final da sequência, e ela
-// não faz parte dos valores observados.
+// Monitorando o uso da sala de descanso
+// Toda vez que o sistema de iluminação de uma sala de descanso é ligado
+// registra-se que tal evento ocorreu, e toda vez que esse mesmo sistema
+// foi desligado, também se registra o evento. De tal forma que ao final
+// de um certo período de monitoramento tem-se o histórico de uso daquele sistema.
+// Escreva um programa que encontre, nos registros do histórico, o maior intervalo
+// de tempo que o sistema de iluminação da sala ficou ligado.
+// Os registros são da seguinte forma:
+// 1 10:00:00
+// 0 10:10:00
+// 1 10:25:00
+// 0 12:00:00
+// 2
+// Cada linha registra o tipo de evento (acionou=1 desligou=0) e a hora em que ele ocorreu.
+// Um tipo de evento igual a 2 (desconhecido) sinaliza que chegou-se ao fim do histórico de eventos.
+// A saída do programa deve ser o maior tempo em segundos.
 // Dicas
-// outliners = os pontos fora da curva.
-// valores iguais aos outliners devem ser desconsiderados da sequência no cálculo da média.
-// use apenas UMA casa decimal para gerar a saída
-// use o tipo double para expressar a média das temperaturas.
+// Use o bizu passado em sala de aula.
+// Quem é o candidato a maior intervalo?
+// Trabalhe com segundos;
+// Considere que o monitoramento começou e terminou no mesmo dia (24 horas).
 // Exemplo de Entrada
-// 2 10 5 7 3 -1 10 500
+// 1 10:00:00
+// 0 10:10:00
+// 1 10:25:00
+// 0 10:30:00
+// 2
 // Exemplo de Saída
-// 4.2
+// 600
 
 #include <stdio.h>
 
+int segundos(int hora, int min, int seg){
+
+	return hora * 3600 + min * 60 + seg;
+
+}
+
 int main(void){
 
-	int maior, menor, tmp, soma = 0, cont = 0, contMaior = 0, contMenor = 0;
+	int tipo, maiorIntervalo = 0;
 
-	scanf("%d", &tmp);
+	scanf("%d", &tipo);
 
-	maior = menor = tmp;
+	while(tipo != 2){
 
-	while(tmp != 500){
+		int hora, min, segInicio, segFim, intervalo;
 
-		if(tmp > maior){
+		scanf("%d:%d:%d", &hora, &min, &segInicio);
+		segInicio = segundos(hora, min, segInicio);
 
-			maior = tmp;
-			contMaior = 0;
+		scanf("%d %d:%d:%d", &tipo, &hora, &min, &segFim);
+		segFim = segundos(hora, min, segFim);
 
-		}else if(tmp < menor){
+		intervalo = segFim - segInicio;
 
-			menor = tmp;
-			contMenor = 0;
+		if(intervalo > maiorIntervalo) maiorIntervalo = intervalo;
 
-		}
-
-		if(tmp == maior) contMaior++;
-
-		if(tmp == menor) contMenor++;
-
-		soma += tmp;
-		cont++;
-
-		scanf("%d", &tmp);
+		scanf("%d", &tipo);
 
 	}
 
-	if(maior != 500){
-
-		soma -= maior * contMaior + menor * contMenor;
-		cont -= contMaior + contMenor;
-
-		printf("%.1lf\n", (double) soma/cont);
-
-	}
+	printf("%d\n", maiorIntervalo);
 
 	return 0;
 

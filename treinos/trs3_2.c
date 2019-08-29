@@ -21,22 +21,28 @@
 // 4
 
 #include <stdio.h>
+#include <stdlib.h>
 
 int main(void){
 
-	int consumoMedio, mes, consumoMes, maiorMes, maiorVar, i;
+	int consumoMedio, cont, maiorMes = 4, maiorVar = 0;
 
 	scanf("%d", &consumoMedio);
-	scanf("%d %d", &mes, &consumoMes);
 
-	maiorVar = consumoMes - consumoMedio;
-	maiorMes = mes;
+	for(cont = 0; cont < 6; cont++){
 
-	for(i = 1; i < 6; i++){
+		int mes, consumo, var;
 
-		scanf("%d %d", &mes, &consumoMes);
+		scanf("%d %d", &mes, &consumo);
 
-		if(consumoMes - consumoMedio > maiorVar) maiorMes = mes;
+		var = abs(consumoMedio - consumo);
+
+		if(var > maiorVar){
+
+			maiorMes = mes;
+			maiorVar = var;
+
+		}
 
 	}
 

@@ -1,62 +1,73 @@
 // Enunciado
-// Temperatura da Plantação
-// Dois sensores foram fixados em um pontos estratégicos de uma plantacão de cupuaçu,
-// na regão de Presidente Figuereido, com a intenção de medir as variações de temperatura
-// na plantação. As medidas registradas por cada sensor geraram uma série S formada por
-// pares (x,y) indicando as temperaturas captadas em uma mesma hora do dia. A sua tarefa
-// é elaborar um programa que processe S, e determine, para cada dia, a maior e a menor
-// variação de temperatura registrada. Os registros de um dia se encerram quando o par (x,y)
-// for igual a (100,100) e S se encerra quando a PRIMEIRA temperatura do dia for igual a (-100,-100).
-// Quando não houve variações de temperatura, que diferenciem a menor e a maior, seu programa
-// deve imprimir a mensagem "estufa estabilizada".
+// Seja S uma sequência de números inteiros onde se registrou, ao longo do dia,
+// as mudanças de temperatura em uma adega. Para se estimar a temperatura média
+// da sala, além do cálculo convencional de média aritmética, decidiu-se excluir
+// da sequência os outliners , isto é, a menor e a maior temperatura evitando assim
+// que eles afetem a média. Implemente um programa que resolva este problema,
+// considerando que uma temperatura de 500 graus indica o final da sequência, e ela
+// não faz parte dos valores observados.
+// Dicas
+// outliners = os pontos fora da curva.
+// valores iguais aos outliners devem ser desconsiderados da sequência no cálculo da média.
+// use apenas UMA casa decimal para gerar a saída
+// use o tipo double para expressar a média das temperaturas.
 // Exemplo de Entrada
-// 3 35 31 38 100 100
-// 30 30 30 30 30 30 100 100
-// 24 20 26 30 28 32 100 100
-// -100 -100
+// 2 10 5 7 3 -1 10 500
 // Exemplo de Saída
-// 32 7
-// estufa estabilizada
-// estufa estabilizada
+// 4.2
 
 #include <stdio.h>
 
-int modulo(int num){
-
-	return num < 0 ? num * -1 : num;
-
-}
-
 int main(void){
 
-	int tmp1, tmp2, var, maiorVar, menorVar;
+	double media = 0.0;
+	int temp, maior, freqMaior, menor, freqMenor, soma = 0, freq = 0, prim = 1;
 
-	scanf("%d %d", &tmp1, &tmp2);
+	scanf("%d", &temp);
 
-	while(tmp1 != -100 && tmp2 != -100){
+	while(temp != 500){
 
-		maiorVar = menorVar = var = modulo(tmp2 - tmp1);
+		if(prim){
 
-		while(tmp1 != 100 && tmp2 != 100){
+			prim = 0;
+			freqMaior = freqMenor = 1;
+			maior = menor = temp;
 
-			var = modulo(tmp2 - tmp1);
+		}else if(temp > maior){
 
-			if(var > maiorVar) maiorVar = var;
-			else if(var < menorVar) menorVar = var;
+			freqMaior = 1;
+			maior = temp;
 
-			scanf("%d %d", &tmp1, &tmp2);
+		}else if(temp < menor){
+
+			freqMenor = 1;
+			menor = temp;
+
+		}else if(temp == maior){
+
+			freqMaior++;
+
+		}else if(temp == menor){
+
+			freqMenor++;
 
 		}
 
-		if(maiorVar != menorVar){
+		freq++; soma = soma + temp;
 
-			printf("%d %d\n", maiorVar, menorVar);
+		scanf("%d", &temp);
 
-		}else printf("estufa estabilizada\n");
+		if(temp == 500){
 
-		scanf("%d %d", &tmp1, &tmp2);
+			soma = soma - (maior * freqMaior + menor * freqMenor);
+			freq = freq - (freqMaior + freqMenor);
+			media = (double) soma/freq;
+
+		}
 
 	}
+
+	printf("%.1lf\n", media);
 
 	return 0;
 
