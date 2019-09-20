@@ -39,15 +39,14 @@
 // 2017-04-06 22:30:11
 // 2017-04-06 23:30:07
 
-#include <time.h>
 #include <stdio.h>
+#include <time.h>
 
 // Exemplo de uso
 // int ano=2001, mes=1, dia=1;
 // int dias = emdiasdesde2000(ano, mes,dia);
 
 int emdiasdesde2000(int ano, int mes, int dia){
-
 	int ano2000=2000, mes01=1, dia01=1;
 
 	struct tm dt1 = (struct tm){.tm_year=ano-1900, .tm_mon=mes-1, .tm_mday=dia};
@@ -61,10 +60,9 @@ int emdiasdesde2000(int ano, int mes, int dia){
 	seconds = (seconds<0?seconds*-1:seconds);
 
 	return seconds/(24*60*60);
-
 }
 
-unsigned long emsegundosdesde2000(int ano, int mes, int dia, int hora, int min, int seg){
+int emsegundosdesde2000(int ano, int mes, int dia, int hora, int min, int seg){
 
 	return emdiasdesde2000(ano, mes, dia) * 86400 + hora * 3600 + min * 60 + seg;
 
@@ -72,72 +70,72 @@ unsigned long emsegundosdesde2000(int ano, int mes, int dia, int hora, int min, 
 
 int main(void){
 
-	int contNinhada = 1;
-	int ano, mes, dia, hora, min, seg, idade;
-	int anoVelho, mesVelho, diaVelho, horaVelho, minVelho, segVelho;
-	int anoNovo, mesNovo, diaNovo, horaNovo, minNovo, segNovo;
-	unsigned long idadeVelho, idadeNovo;
+	int ninhadas = 1;
 
+	int anoVelho, mesVelho, diaVelho, horaVelho, minVelho, segVelho;
 	scanf("%d-%d-%d %d:%d:%d", &anoVelho, &mesVelho, &diaVelho, &horaVelho, &minVelho, &segVelho);
 
 	while(anoVelho != 0){
 
+		int anoNovo, mesNovo, diaNovo, horaNovo, minNovo, segNovo;
 		scanf("%d-%d-%d %d:%d:%d", &anoNovo, &mesNovo, &diaNovo, &horaNovo, &minNovo, &segNovo);
 
-		idadeVelho = emsegundosdesde2000(anoVelho, mesVelho, diaVelho, horaVelho, minVelho, segVelho);
-		idadeNovo = emsegundosdesde2000(anoNovo, mesNovo, diaNovo, horaNovo, minNovo, segNovo);
+		int idadeVelho = emsegundosdesde2000(anoVelho, mesVelho, diaVelho, horaVelho, minVelho, segVelho);
+		int idadeNovo = emsegundosdesde2000(anoNovo, mesNovo, diaNovo, horaNovo, minNovo, segNovo);
+
+		int ano, mes, dia, hora, min, seg, idade;
 
 		if(idadeNovo < idadeVelho){
 
-			idade = idadeVelho; idadeVelho = idadeNovo; idadeNovo = idade;
-
+			idade = idadeVelho;
 			ano = anoVelho; mes = mesVelho; dia = diaVelho;
 			hora = horaVelho; min = minVelho; seg = segVelho;
 
+			idadeVelho = idadeNovo;
 			anoVelho = anoNovo; mesVelho = mesNovo; diaVelho = diaNovo;
 			horaVelho = horaNovo; minVelho = minNovo; segVelho = segNovo;
 
+			idadeNovo = idade;
 			anoNovo = ano; mesNovo = mes; diaNovo = dia;
 			horaNovo = hora; minNovo = min; segNovo = seg;
 
 		}
 
 		scanf("%d-%d-%d %d:%d:%d", &ano, &mes, &dia, &hora, &min, &seg);
-		idade = emsegundosdesde2000(ano, mes, dia, hora, min, seg);
 
 		while(ano != 0){
 
-	 		if(idade < idadeVelho){
+			idade = emsegundosdesde2000(ano, mes, dia, hora, min, seg);
 
-				idadeNovo = idadeVelho; idadeVelho = idade;
+			if(idade < idadeVelho){
 
-	 			anoNovo = anoVelho; mesNovo = mesVelho; diaNovo = diaVelho;
-	 			horaNovo = horaVelho; minNovo = minVelho; segNovo = segVelho;
+				idadeNovo = idadeVelho;
+				anoNovo = anoVelho; mesNovo = mesVelho; diaNovo = diaVelho;
+				horaNovo = horaVelho; minNovo = minVelho; segNovo = segVelho;
 
-	 			anoVelho = ano; mesVelho = mes; diaVelho = dia;
-	 			horaVelho = hora; minVelho = min; segVelho = seg;
+				idadeVelho = idade;
+				anoVelho = ano; mesVelho = mes; diaVelho = dia;
+				horaVelho = hora; minVelho = min; segVelho = seg;
 
-	 		}else if(idade < idadeNovo){
+			}else if(idade < idadeNovo){
 
 				idadeNovo = idade;
-
 				anoNovo = ano; mesNovo = mes; diaNovo = dia;
 				horaNovo = hora; minNovo = min; segNovo = seg;
 
 			}
 
-	 		scanf("%d-%d-%d %d:%d:%d", &ano, &mes, &dia, &hora, &min, &seg);
-	 		idade = emsegundosdesde2000(ano, mes, dia, hora, min, seg);
+			scanf("%d-%d-%d %d:%d:%d", &ano, &mes, &dia, &hora, &min, &seg);
 
-	 	}
+		}
 
-	 	printf("Ninhada:%d\n", contNinhada);
-	 	printf("%4d-%02d-%02d %02d:%02d:%02d\n", anoVelho, mesVelho, diaVelho, horaVelho, minVelho, segVelho);
-	 	printf("%4d-%02d-%02d %02d:%02d:%02d\n", anoNovo, mesNovo, diaNovo, horaNovo, minNovo, segNovo);
+		printf("Ninhada: %d\n", ninhadas);
+		printf("%d-%02d-%02d %02d:%02d:%02d\n", anoVelho, mesVelho, diaVelho, horaVelho, minVelho, segVelho);
+		printf("%d-%02d-%02d %02d:%02d:%02d\n", anoNovo, mesNovo, diaNovo, horaNovo, minNovo, segNovo);
 
 		scanf("%d-%d-%d %d:%d:%d", &anoVelho, &mesVelho, &diaVelho, &horaVelho, &minVelho, &segVelho);
 
-		contNinhada++;
+		ninhadas++;
 
 	}
 

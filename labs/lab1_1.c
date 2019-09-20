@@ -1,29 +1,31 @@
 // Enunciado
-// Calcule a idade humana equivalente de um cachorro, sabendo que para cada
-// ano de vida humano equivale a aproximadamente 10 anos do cachorro.
-// O seu programa deve informar, idade do cachorro na forma ano(s) e mes(es),
-// no caso de idades humanas não completas.
+// Crie um programa em C para conversão de temperatura.
+// Dado um valor em Celsius, calcule e mostre o valor em Fahrenheit.
 // Dicas
-// Considere que a entrada humana é informada com um número real,
-// onde a arte fracionária representa os meses da idade, variando de 0 a 11.
+// O Valor em Celsius deve ser lido do teclado como um ponto flutuante.
+// Note que valor de saída deve ter somente duas casas após o ponto.
+// Formula de Conversão:
+// F = 1.8 * C + 32
 // Exemplo de Entrada
-// 1.00
+// 10
 // Exemplo de Saída
-// 10 ano(s) 0 mes(es)
+// 50.00
 
 #include <stdio.h>
 
+double fahrenheit(double celsius){
+
+	return celsius * 1.8 + 32.0;
+
+}
+
 int main(void){
 
-	float idade = 0.0;
-	int anos = 0, meses = 0;
+	double celsius;
 
-	scanf("%f", &idade);
+	scanf("%lf", &celsius);
 
-	anos = (int) idade * 10;
-	meses = (idade - (int) idade) * 1000;
-
-	printf("%d ano(s) %d mes(es)\n", anos, meses);
+	printf("%.2lf\n", fahrenheit(celsius));
 
 	return 0;
 

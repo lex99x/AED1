@@ -8,27 +8,28 @@
 // soma dos digitos: 6
 
 #include <stdio.h>
-#include <math.h>
 
 int main(void){
 
-	int num = 0, prim = 0, soma = 0, div = 0, cont = 4, aux = 0;
+	int num, dig, soma, aux;
 
 	scanf("%d", &num);
 
 	aux = num;
 
-	while(cont){
+	dig = aux / 1000;
+	aux = aux % 1000;
+	soma = dig;
 
-		div = pow(10, cont - 1);
-		prim = (int) num/div;
-		soma += prim;
-		num = num - prim * div;
-		cont--;
+	dig = aux / 100;
+	aux = aux % 100;
+	soma = soma + dig;
 
-	}
+	dig = aux / 10;
+	aux = aux % 10;
+	soma = soma + dig + aux;
 
-	printf("valor original: %d\n", aux);
+	printf("valor original: %d\n", num);
 	printf("soma dos digitos: %d\n", soma);
 
 	return 0;

@@ -33,20 +33,18 @@
 
 int main(void){
 
-	int num, ant, ack = 0, timeout = 0;
+	int num, ack = 0, timeout = 0;
 
 	scanf("%d", &num);
 
-	ant = num;
-
 	while(num >= 1){
+
+		int ant = num;
 
 		scanf("%d", &num);
 
 		if(num == ant/2) ack++;
 		else if(num == 1) timeout++;
-
-		ant = num;
 
 	}
 
