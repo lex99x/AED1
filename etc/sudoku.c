@@ -2,9 +2,13 @@
 #include <stdlib.h>
 #include <time.h>
 #define N 9
-#define QUANT_ELEMENTOS_INICIAIS 27
+#define FACIL 72
+#define MEDIO 54
+#define DIFICIL 36
+#define QUANT_VALORES_INICIAIS 27
+#define bool unsigned short int
 
-int sudoku[N][N];
+int sudokuJogo[N][N], sudokuParcial[N][N], sudokuCompleto[N][N];
 
 int aleatorioIntervaloFechado(int min, int max){
 
@@ -14,19 +18,37 @@ int aleatorioIntervaloFechado(int min, int max){
 
 }
 
-short verificarPosicao(int linha, int coluna){
+bool validarCoordenada(int coordenada){
 
-	return sudoku[linha][coluna] == 0;
+	return 0 <= coordenada && coordenada <= N - 1;
 
 }
 
-short verificarLinha(int linha, int valor){
+bool validarValor(int valor){
+
+	return 1 <= valor && valor <= N;
+
+}
+
+bool validarPosicaoParcial(int linha, int coluna){
+
+	return sudokuParcial[linha][coluna] == 0;
+
+}
+
+bool validarPosicaoJogo(int linha, int coluna){
+
+	return sudokuJogo[linha][coluna] == 0;
+
+}
+
+bool validarHorizontal(int linha, int valor){
 
 	int coluna;
 
 	for(coluna = 0; coluna < N; coluna++){
 
-		if(sudoku[linha][coluna] == valor) return 0;
+		if(sudokuJogo[linha][coluna] == valor) return 0;
 
 	}
 
@@ -34,13 +56,13 @@ short verificarLinha(int linha, int valor){
 
 }
 
-short verificarColuna(int coluna, int valor){
+bool validarVertical(int coluna, int valor){
 
 	int linha;
 
 	for(linha = 0; linha < N; linha++){
 
-		if(sudoku[linha][coluna] == valor) return 0;
+		if(sudokuJogo[linha][coluna] == valor) return 0;
 
 	}
 
@@ -48,18 +70,15 @@ short verificarColuna(int coluna, int valor){
 
 }
 
-short verificarQuadrante(int linha, int coluna, int valor){
+bool validarQuadrante(int linha, int coluna, int valor){
 
 	int linhaOrigem = 3 * (linha/3), colunaOrigem = 3 * (coluna/3);
-	//int linhaOrigem = linha - (linha % 3), colunaOrigem = coluna - (coluna % 3);
 
-	int i, j;
+	for(linha = linhaOrigem; linha < (linhaOrigem + 3); linha++){
 
-	for(i = linhaOrigem; i < (linhaOrigem + 3); i++){
+		for(coluna = colunaOrigem; coluna < (colunaOrigem + 3); coluna++){
 
-		for(j = colunaOrigem; j < (colunaOrigem + 3); j++){
-
-			if(sudoku[i][j] == valor) return 0;
+			if(sudokuJogo[linha][coluna] == valor) return 0;
 
 		}
 
@@ -69,44 +88,147 @@ short verificarQuadrante(int linha, int coluna, int valor){
 
 }
 
-short verificarJogada(int linha, int coluna, int valor){
+bool validarDupla(int linha, int coluna){
 
-	return verificarPosicao(linha, coluna) && verificarLinha(linha, valor) &&
-	verificarColuna(coluna, valor) && verificarQuadrante(linha, coluna, valor);
+	return (
+
+		validarCoordenada(linha) &&
+		validarCoordenada(coluna) &&
+		validarPosicaoParcial(linha, coluna) &&
+		!validarPosicaoJogo(linha, coluna)
+
+	);
 
 }
 
-void registrarJogada(int linha, int coluna, int valor){
+bool validarTriplaCPU(int linha, int coluna, int valor){
 
-	sudoku[linha][coluna] = valor;
+	return (
+
+		validarPosicaoJogo(linha, coluna) &&
+		validarHorizontal(linha, valor) &&
+		validarVertical(coluna, valor) &&
+		validarQuadrante(linha, coluna, valor)
+
+	);
 
 }
 
-void criarSudokuAleatorio(void){
+bool validarTriplaJogador(int linha, int coluna, int valor){
 
-	int linha, coluna;
+	return (
 
-	for(linha = 0; linha < N; linha++){
+		validarCoordenada(linha) &&
+		validarCoordenada(coluna) &&
+		validarValor(valor) &&
+		validarPosicaoParcial(linha, coluna) &&
+		validarHorizontal(linha, valor) &&
+		validarVertical(coluna, valor) &&
+		validarQuadrante(linha, coluna, valor)
 
-		for(coluna = 0; coluna < N; coluna++){
+	);
 
-			sudoku[linha][coluna] = 0;
+}
+
+bool validarSudokuAleatorio(void){
+
+	int linha = 0, coluna = 0, valor;
+
+	do{
+
+		valor = sudokuJogo[linha][coluna];
+
+		if(valor != 0){
+
+			if(coluna == N - 1){
+
+				coluna = 0;
+				linha++;
+
+			}else coluna++;
+
+		}
+
+	}while(valor != 0 && linha < N);
+
+	if(valor != 0) return 1;
+
+	for(valor = 1; valor <= N; valor++){
+
+		if(validarTriplaCPU(linha, coluna, valor)){
+
+			sudokuJogo[linha][coluna] =
+			sudokuParcial[linha][coluna] =
+			sudokuCompleto[linha][coluna] = valor;
+
+			if(validarSudokuAleatorio()) return 1;
+
+			sudokuJogo[linha][coluna] =
+			sudokuParcial[linha][coluna] =
+			sudokuCompleto[linha][coluna] = 0;
 
 		}
 
 	}
 
-	int cont = 0;
+	return 0;
 
-	while(cont < QUANT_ELEMENTOS_INICIAIS){
+}
+
+void criarSudokuCompleto(void){
+
+	do{
+
+		int linha, coluna, valor, cont = 1;
+
+		for(linha = 0; linha < N; linha++){
+
+			for(coluna = 0; coluna < N; coluna++){
+
+				sudokuJogo[linha][coluna] =
+				sudokuParcial[linha][coluna] =
+				sudokuCompleto[linha][coluna] = 0;
+
+			}
+
+		}
+
+		while(cont <= QUANT_VALORES_INICIAIS){
+
+			linha = aleatorioIntervaloFechado(0, N - 1);
+			coluna = aleatorioIntervaloFechado(0, N - 1);
+			valor = aleatorioIntervaloFechado(1, N);
+
+			if(validarTriplaCPU(linha, coluna, valor)){
+
+				sudokuJogo[linha][coluna] =
+				sudokuParcial[linha][coluna] =
+				sudokuCompleto[linha][coluna] = valor;
+
+				cont++;
+
+			}
+
+		}
+
+	}while(!validarSudokuAleatorio());
+
+}
+
+void criarSudokuParcial(int dificuldade){
+
+	int quantPosicoes = N * N - dificuldade, cont = 1;
+
+	while(cont <= quantPosicoes){
 
 		int linha = aleatorioIntervaloFechado(0, N - 1);
 		int coluna = aleatorioIntervaloFechado(0, N - 1);
-		int valor = aleatorioIntervaloFechado(1, N);
 
-		if(verificarJogada(linha, coluna, valor)){
+		if(!validarPosicaoJogo(linha, coluna)){
 
-			registrarJogada(linha, coluna, valor);
+			sudokuJogo[linha][coluna] =
+			sudokuParcial[linha][coluna] = 0;
+
 			cont++;
 
 		}
@@ -115,49 +237,7 @@ void criarSudokuAleatorio(void){
 
 }
 
-short acharPosicaoVazia(int* linha, int* coluna){
-
-	for(*linha = 0; *linha < N; (*linha)++){
-
-		for(*coluna = 0; *coluna < N; (*coluna)++){
-
-			if(sudoku[*linha][*coluna] == 0) return 1;
-
-		}
-
-	}
-
-	return 0;
-
-}
-
-short verificarSudoku(void){
-
-	int linha, coluna;
-
-	if(!acharPosicaoVazia(&linha, &coluna)) return 1;
-
-	int valor;
-
-	for(valor = 1; valor <= N; valor++){
-
-		if(verificarJogada(linha, coluna, valor)){
-
-			registrarJogada(linha, coluna, valor);
-
-			if(verificarSudoku()) return 1;
-
-			registrarJogada(linha, coluna, 0);
-
-		}
-
-	}
-
-	return 0;
-
-}
-
-void imprimirSudoku(void){
+void imprimirSudokuFormatado(void){
 
 	int linha, coluna;
 
@@ -191,7 +271,7 @@ void imprimirSudoku(void){
 
 			if(coluna % 3 == 0) printf("| ");
 
-			if(sudoku[linha][coluna] != 0) printf("%d ", sudoku[linha][coluna]); else printf("* ");
+			if(sudokuJogo[linha][coluna] != 0) printf("%d ", sudokuJogo[linha][coluna]); else printf("* ");
 
 		}
 
@@ -203,21 +283,218 @@ void imprimirSudoku(void){
 
 }
 
-int main(void){
+void imprimirSudokuSimples(void){
 
-	criarSudokuAleatorio();
+	int linha, coluna = 1;
 
-	while(!verificarSudoku()){
+	printf("%3d", coluna); for(coluna++; coluna <= N; coluna++) printf(" %d", coluna);
 
-		criarSudokuAleatorio();
+	for(linha = 0; linha < N; linha++){
+
+		printf("\n%d", linha + 1);
+
+		for(coluna = 0; coluna < N; coluna++){
+
+			int valor = sudokuJogo[linha][coluna];
+
+			if(valor != 0) printf(" %d", valor); else printf(" *");
+
+		}
 
 	}
 
-	imprimirSudoku();
+	printf("\n");
 
-	//int linha, coluna, valor;
+}
 
-	//scanf("%d %d %d", &linha, &coluna, &valor);
+void gravarSudokuSimples(FILE* saida){
+
+	int linha, coluna = 1;
+
+	fprintf(saida, "%3d", coluna); for(coluna++; coluna <= N; coluna++) fprintf(saida, " %d", coluna);
+
+	for(linha = 0; linha < N; linha++){
+
+		fprintf(saida, "\n%d", linha + 1);
+
+		for(coluna = 0; coluna < N; coluna++){
+
+			int valor = sudokuJogo[linha][coluna];
+
+			if(valor != 0) fprintf(saida, " %d", valor); else fprintf(saida, " *");
+
+		}
+
+	}
+
+	fprintf(saida, "\n");
+
+}
+
+void gravarTriplasParciais(FILE* entrada){
+
+	int linha, coluna;
+
+	for(linha = 0; linha < N; linha++){
+
+		for(coluna = 0; coluna < N; coluna++){
+
+			int valor = sudokuParcial[linha][coluna];
+
+			if(valor != 0) fprintf(entrada, "%d %d %d\n", linha + 1, coluna + 1, valor);
+
+		}
+
+	}
+
+	fprintf(entrada, "0\n");
+
+}
+
+void gravarTriplasJogaveis(void){
+
+	FILE* triplasJogaveis = fopen("triplas_jogaveis.txt", "w");
+
+	int linha, coluna;
+
+	for(linha = 0; linha < N; linha++){
+
+		for(coluna = 0; coluna < N; coluna++){
+
+			if(validarPosicaoParcial(linha, coluna)){
+
+				fprintf(triplasJogaveis, "J %d %d %d\n", linha + 1, coluna + 1, sudokuCompleto[linha][coluna]);
+
+			}
+
+		}
+
+	}
+
+	fclose(triplasJogaveis);
+
+}
+
+int main(void){
+
+	int dificuldade = MEDIO, quantRegistros = dificuldade;
+
+	criarSudokuCompleto();
+	criarSudokuParcial(dificuldade);
+
+	FILE* entrada = fopen("entrada.txt", "w");
+	FILE* saida = fopen("saida.txt", "w");
+
+	gravarTriplasParciais(entrada);
+	gravarTriplasJogaveis();
+
+	imprimirSudokuFormatado();
+	gravarSudokuSimples(saida);
+
+	char operador = '\0';
+
+	while(operador != 'F' && quantRegistros < N * N){
+
+		scanf(" %c", &operador); fprintf(entrada, "%c", operador);
+
+		switch(operador){
+
+			int linha, coluna, valor;
+
+			case 'J':
+
+				scanf("%d %d %d", &linha, &coluna, &valor);
+				fprintf(entrada, " %d %d %d\n", linha, coluna, valor);
+
+				printf("JOGADA (%d, %d, %d) ", linha, coluna, valor);
+				fprintf(saida, "JOGADA (%d, %d, %d) ", linha, coluna, valor);
+
+				linha--; coluna--;
+
+				if(validarTriplaJogador(linha, coluna, valor)){
+
+					sudokuJogo[linha][coluna] = valor;
+					quantRegistros++;
+
+					printf("EFETUADA\n");
+					fprintf(saida, "EFETUADA\n");
+
+				}else{
+
+					printf("INVALIDA\n");
+					fprintf(saida, "INVALIDA\n");
+
+				}
+
+			break;
+
+			case 'D':
+
+				scanf("%d %d", &linha, &coluna);
+				fprintf(entrada, " %d %d\n", linha, coluna);
+
+				printf("REMOCAO (%d, %d) ", linha, coluna);
+				fprintf(saida, "REMOCAO (%d, %d) ", linha, coluna);
+
+				linha--; coluna--;
+
+				if(validarDupla(linha, coluna)){
+
+					sudokuJogo[linha][coluna] = 0;
+					quantRegistros--;
+
+					printf("EFETUADA\n");
+					fprintf(saida, "EFETUADA\n");
+
+				}else{
+
+					printf("INVALIDA\n");
+					fprintf(saida, "INVALIDA\n");
+
+				}
+
+			break;
+
+			case 'V':
+
+				fprintf(entrada, "\n");
+				imprimirSudokuFormatado();
+				gravarSudokuSimples(saida);
+
+			break;
+
+			case 'F':
+
+				printf("FIM DE JOGO\n");
+				fprintf(saida, "FIM DE JOGO\n");
+
+			break;
+
+			default:
+
+				fprintf(entrada, "\n");
+				printf("OPCAO INVALIDA\n");
+				fprintf(saida, "OPCAO INVALIDA\n");
+
+			break;
+
+		}
+
+	}
+
+	if(quantRegistros == N * N){
+
+		printf("PARABENS VOCE RESOLVEU O SUDOKU\n");
+		fprintf(saida, "PARABENS VOCE RESOLVEU O SUDOKU\n");
+
+	}
+
+	imprimirSudokuFormatado();
+	gravarSudokuSimples(saida);
+	fprintf(entrada, "\n");
+
+	fclose(entrada);
+	fclose(saida);
 
 	return 0;
 

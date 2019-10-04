@@ -1,27 +1,27 @@
 // Enunciado
-// Mediana dos Salários
+// MEDIANA DOS SALÁRIOS
 // A lei da transparência obriga os órgãos e autarquias federais a tornar públicos os seus gastos.
-// Em pró desta lei, pretende-se implementar em um tribunal federal um serviço que permita acesso
-// aos gastos com pagamentos de salários.
-// Como parte deste serviço, você deverá fazer um programa cuja entrada:
-// É uma sequência S, de triplas s que contém:a função, matrícula, e salário de cada funcionário,
-// constante na folha salarial do referido Tribunal.
-// A função é representada por uma letra A– Administrativo ou N - Não Administrativo;
-// para preservação das identidades.
+// Em prol desta lei, pretende-se implementar em um tribunal federal um serviço que permita acesso aos
+// gastos com pagamentos de salários. Como parte deste serviço, você deverá fazer um programa cuja entrada:
+// É uma sequência S, de triplas s que contém: a função, matrícula, e
+// salário de cada funcionário, constante na folha salarial do referido tribunal;
+// A função é representada por uma letra A - Administrativo ou
+// N - Não Administrativo, para preservação das identidades;
 // A matrícula é um valor inteiro. Este campo garante o compromisso de tornar públicos os dados
-// e a identificação de indivíduos para qualquer situação de auditoria posterior.
-// O salário é um valor real (pode ser fracionário).
-// O número de funcionários é desconhecido, portanto, quando for lida uma tripla scom o campo
-// função =“F” está sendo indicado o fim da sequència S;
-// Seu programa deve processar a sequência S e imprimir como saída as palavras "Administrativo:"
-// e "Não Administrativo:" e a seguir, para cada grupo, linhas com:
+// e a identificação de indivíduos para qualquer situação de auditoria posterior;
+// O salário é um valor real (pode ser fracionário);
+// O número de funcionários é desconhecido, portanto, quando for lida
+// uma tripla s com o campo função = “F” está sendo indicado o fim da sequência S.
+// Seu programa deve processar a sequência S e imprimir como saída as palavras
+// "Administrativo:" e "Não Administrativo:" e a seguir, para cada grupo, linhas com:
 // O valor mediano (mediana) dos salários dos funcionários em funções Não administrativas;
 // O valor mediano (mediana) dos salários dos funcionários em funções Administrativas.
 // Dicas
-// Lembre que:
-// Quando o número de dados é par, a mediana são os dois valores centrais do grupo.
+// Lembre-se que:
+// Quando o número de dados é par, a mediana é os dois valores centrais do grupo.
 // Quando o número de dados é impar, a mediana é um único valor: o do meio.
-// Exemplo de Entrada
+// Exemplos de Entrada e Saída
+// Entrada
 // N 2017011 40000.11
 // N 2017001 30000.00
 // N 2017021 21000.00
@@ -32,7 +32,7 @@
 // A 2017021 1010.0
 // A 2017022 1300.0
 // F
-// Exemplo de Saída
+// Saída
 // Administrativo:
 // 2000.00
 // 3000.00
@@ -40,22 +40,21 @@
 // 30000.00
 
 #include <stdio.h>
-#define TAM 10000
+#define MAX 10000
 
-void selsort(double* vet, int n){
+void selsort(double vetor[], int N){
 
-	int i, j, imenor;
-	double aux;
+	int i, j;
 
-	for(i = 0; i < n - 1; i++){
+	for(i = 0; i < N - 1; i++){
 
-		imenor = i;
+		int imenor = i;
 
-		for(j = i + 1; j < n; j++) if(vet[imenor] > vet[j]) imenor = j;
+		for(j = i + 1; j < N; j++) if(vetor[imenor] > vetor[j]) imenor = j;
 
-		aux = vet[i];
-		vet[i] = vet[imenor];
-		vet[imenor] = aux;
+		double aux = vetor[i];
+		vetor[i] = vetor[imenor];
+		vetor[imenor] = aux;
 
 	}
 
@@ -64,24 +63,24 @@ void selsort(double* vet, int n){
 int main(void){
 
 	char funcao;
-	int matricula, contA = 0, contN = 0;
-	double salariosA[TAM], salariosN[TAM];
+	int contA = 0, contN = 0;
+	double salariosA[MAX], salariosN[MAX];
 
 	scanf(" %c", &funcao);
 
 	while(funcao != 'F'){
 
-		scanf("%d", &matricula);
+		int matricula; scanf("%d", &matricula);
 
-		if(funcao == 'N'){
-
-			scanf("%lf", &salariosN[contN]);
-			contN++;
-
-		}else{
+		if(funcao == 'A'){
 
 			scanf("%lf", &salariosA[contA]);
 			contA++;
+
+		}else{
+
+			scanf("%lf", &salariosN[contN]);
+			contN++;
 
 		}
 
@@ -95,25 +94,19 @@ int main(void){
 
 	if(contA % 2 == 0){
 
-		printf("%.2lf\n%.2lf\n", salariosA[contA/2 - 1], salariosA[contA/2]);
+		printf("%.2lf\n", salariosA[contA/2 - 1]);
+		printf("%.2lf\n", salariosA[contA/2]);
 
-	}else{
-
-		printf("%.2lf\n", salariosA[(contA - 1)/2]);
-
-	}
+	}else printf("%.2lf\n", salariosA[(contA - 1)/2]);
 
 	printf("N Administrativo:\n");
 
 	if(contN % 2 == 0){
 
-		printf("%.2lf\n%.2lf\n", salariosN[contN/2 - 1], salariosN[contN/2]);
+		printf("%.2lf\n", salariosN[contN/2 - 1]);
+		printf("%.2lf\n", salariosN[contN/2]);
 
-	}else{
-
-		printf("%.2lf\n", salariosN[(contN - 1)/2]);
-
-	}
+	}else printf("%.2lf\n", salariosN[(contN - 1)/2]);
 
 	return 0;
 

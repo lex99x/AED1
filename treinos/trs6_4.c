@@ -6,7 +6,7 @@
 // Que os dois últimos dígitos da nota são as casas decimais;
 // Que o primeiro registro da entrada contém o tamanho da sequência S.
 // Existem notas repetidas, por isso sua implementação deve ser estável,
-// isto é, a ordem dos valores iguais, no vetor ordenado, é definida pela
+// isto é, a ordem dos valores iguais, no vetoror ordenado, é definida pela
 // ordem com que eles aparecem na sequência original.
 // Use o algoritmo de ordenação, visto em sala de aula, que usa a menor
 // quantidade de trocas, no pior cenário. Você deve comprovar o uso do
@@ -22,24 +22,24 @@
 
 #include <stdio.h>
 
-int selsort(int vetor[], int n){
+int insertionSort(int vetor[], int N){
 
-	int i, j, imenor, aux, trocas = 0;
+	int i, j, aux, trocas = 0;
 
-	for(i = 0; i < n - 1; i++){
+	for(i = 1; i < N; i++) {
 
-		imenor = i;
+		aux = vetor[i];
+		j = i - 1;
 
-		for(j = i + 1; j < n; j++) if(vetor[j] < vetor[imenor]) imenor = j;
+		while(j >= 0 && vetor[j] > aux){
 
-		if(imenor != i){
-
-			aux = vetor[i];
-			vetor[i] = vetor[imenor];
-			vetor[imenor] = aux;
-			trocas++;
+			vetor[j + 1] = vetor[j];
+			j--;
 
 		}
+
+		vetor[j + 1] = aux;
+		trocas++;
 
 	}
 
@@ -49,19 +49,19 @@ int selsort(int vetor[], int n){
 
 int main(void){
 
-	int n;
+	int N;
 
-	scanf("%d", &n);
+	scanf("%d", &N);
 
-	int notas[n], cont;
+	int notas[N], cont;
 
-	for(cont = 0; cont < n; cont++) scanf("%d", &notas[cont]);
+	for(cont = 0; cont < N; cont++) scanf("%d", &notas[cont]);
 
-	int trocas = selsort(notas, n);
+	int trocas = insertionSort(notas, N);
 
 	printf("trocas: %d\n", trocas);
 
-	for(cont = 0; cont < n; cont++) printf("%.2lf ", notas[cont]/100.0);
+	for(cont = 0; cont < N; cont++) printf("%.2lf ", notas[cont]/100.0);
 
 	return 0;
 

@@ -1,134 +1,135 @@
 // Enunciado
-// A nota mais Frequente
+// A(S) NOTA(S) MAIS FREQUENTE(S)
 // Em uma série S estão registradas tuplas contendo nota e matrícula
-// de cada candidato que fez uma certa prova. Faça um programa que imprima:
-// O texto "Nota:" e ao lado a nota que mais ocorreu na prova.
-// Nas linhas seguintes, o texto “Matrícula: “ e ao lado a matrícula de cada candidato
-// que obteve a nota mais frequente. Um registro por linha.
-// Considere que a sequência S está desordenada e tem tamanho de ATÉ 100 elementos,
-// e sabe-se que ela termina quando a matrícula for um valor menor que zero.
-// Exemplo de Entrada
+// de cada candidato que fez uma certa prova. Faça um programa que imprima,
+// para cada moda (nota com a maior frequência) de S:
+// O texto "Nota: " e ao lado o valor da moda;
+// Nas linhas seguintes, o texto “Matricula: “ e ao lado a matrícula de
+// cada candidato que obteve nota igual a moda. Um registro por linha.
+// Considere que a série S está desordenada e tem tamanho de ATÉ 100 elementos,
+// e sabe-se que ela termina quando a matrícula for um valor menor que zero,
+// considere também que na série S pode haver mais de uma nota com a maior frequência,
+// seu programa deve então imprimir cada moda (em ordem crescente) e suas
+// respectivas notas logo abaixo (na ordem que aparecem em S).
+// Observe o padrão de saída do exemplo abaixo para melhor compreensão.
+// Exemplos de Entrada e Saída
+// Entrada
 // 2176635 67495
-// 2173590 54612
-// 2171008 12857
-// 2173671 60395
 // 2174818 41929
-// 2175033 14410
+// 2173590 54612
+// 2173671 60395
+// 2175033 12857
 // 2175501 21681
+// 2171008 12857
 // 2174500 59899
 // 2173739 48733
 // 2173000 41929
 // -1
-// Exemplo de Saída
+// Saída
+// Nota: 128.57
+// Matricula: 2175033
+// Matricula: 2171008
 // Nota: 419.29
 // Matricula: 2174818
 // Matricula: 2173000
 
 #include <stdio.h>
-#include <stdlib.h>
 #define MAX 100
 
-typedef struct{
+void selsort(int vetor[], int N){
 
-	int matricula;
-	int nota;
+	int i, j;
 
-} Candidato;
+	for(i = 0; i < N - 1; i++){
 
-void selsort(int** vet, int n){
+		int imenor = i;
 
-	int i, j, imenor;
-	int* aux;
+		for(j = i + 1; j < N; j++) if(vetor[imenor] > vetor[j]) imenor = j;
 
-	for(i = 0; i < n - 1; i++){
-
-		imenor = i;
-
-		for(j = i + 1; j < n; j++) if(*vet[imenor] > *vet[j]) imenor = j;
-
-		aux = vet[i];
-		vet[i] = vet[imenor];
-		vet[imenor] = aux;
+		int aux = vetor[i];
+		vetor[i] = vetor[imenor];
+		vetor[imenor] = aux;
 
 	}
 
 }
 
-int frequencia(Candidato** candidatos, int n, int nota){
+int freqNota(int notas[], int quantNotas, int nota){
 
-	int freq = 0, cont;
+	int freq = 0, inota;
 
-	for(cont = 0; cont < n; cont++) if(candidatos[cont] -> nota == nota) freq++;
+	for(inota = 0; inota < quantNotas; inota++) if(notas[inota] == nota) freq++;
 
 	return freq;
 
 }
 
-int main(void){
+int maiorFreqNotas(int notas[], int quantNotas){
 
-	int matricula, cont;
+	int freq, mfreq = 0, inota;
 
-	Candidato* candidatos[MAX];
+	for(inota = 0; inota < quantNotas; inota++){
 
-	scanf("%d", &matricula);
-
-	for(cont = 0; matricula >= 0; cont++){
-
-		Candidato* candidato = (Candidato*) malloc(sizeof(Candidato));
-
-		candidato -> matricula = matricula;
-
-		scanf("%d", &candidato -> nota);
-
-		candidatos[cont] = candidato;
-
-		scanf("%d", &matricula);
-
-	}
-
-	int freq, mfreq = 0, i;
-
-	for(i = 0; i < cont; i++){
-
-		freq = frequencia(candidatos, cont, candidatos[i] -> nota);
+		freq = freqNota(notas, quantNotas, notas[inota]);
 
 		if(freq > mfreq) mfreq = freq;
 
 	}
 
-	int j = 0;
-	int *modas[MAX];
+	return mfreq;
 
-	for(i = 0; i < cont; i++){
+}
 
-		freq = frequencia(candidatos, cont, candidatos[i] -> nota);
+int main(void){
+
+	int matricula, matriculas[MAX], notas[MAX], icandidato;
+
+	scanf("%d", &matricula);
+
+	for(icandidato = 0; matricula >= 0; icandidato++){
+
+		matriculas[icandidato] = matricula;
+
+		scanf("%d", &notas[icandidato]);
+
+		scanf("%d", &matricula);
+
+	}
+
+	int quantCandidatos = icandidato, mfreq = maiorFreqNotas(notas, quantCandidatos);
+
+	int modas[MAX], imoda = 0;
+
+	for(icandidato = 0; icandidato < quantCandidatos; icandidato++){
+
+		int freq = freqNota(notas, quantCandidatos, notas[icandidato]);
 
 		if(freq == mfreq){
 
-			modas[j] = &candidatos[i] -> nota;
-			j++;
+			modas[imoda] = notas[icandidato];
+			imoda++;
 
 		}
 
 	}
 
-	selsort(modas, j);
+	int quantModas = imoda;
 
-	int ant, k;
-	short primVez = 1;
+	selsort(modas, imoda);
 
-	for(i = 0; i < j; i++){
+	int modaAnt = 0;
 
-		if(primVez || *modas[i] != ant){
+	for(imoda = 0; imoda < quantModas; imoda++){
 
-			primVez = 0;
-			ant = *modas[i];
+		if(modas[imoda] != modaAnt){
 
-			printf("Nota: %.2lf\n", *modas[i]/100.0);
+			printf("Nota: %.2lf\n", modas[imoda]/100.0);
 
-			for(k = 0; k < cont; k++){
+			modaAnt = modas[imoda];
 
-				if(candidatos[k] -> nota == *modas[i]) printf("Matricula: %d\n", candidatos[k] -> matricula);
+			for(icandidato = 0; icandidato < quantCandidatos; icandidato++){
+
+				if(notas[icandidato] == modas[imoda]) printf("Matricula: %d\n", matriculas[icandidato]);
 
 			}
 
