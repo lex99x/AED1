@@ -1,8 +1,28 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include "../pilha/pilha.h"
 #define N 9
 #define bool unsigned short int
 
 int sudokuJogo[N][N], sudokuParcial[N][N];
+
+typedef struct{
+
+	int linha, coluna, valor;
+
+} Jogada;
+
+Jogada* criarJogada(int linha, int coluna, int valor){
+
+	Jogada* jogada = (Jogada*) malloc(sizeof(Jogada));
+
+	jogada -> linha = linha;
+	jogada -> coluna = coluna;
+	jogada -> valor = valor;
+
+	return jogada;
+
+}
 
 bool validarCoordenada(int coordenada){
 
@@ -167,6 +187,8 @@ int main(void){
 
 	int quantRegistros = popularSudokus(); char funcao = '\0';
 
+	Jogada* jogada; Pilha* jogadas = criarPilha();
+
 	imprimirSudokuJogo();
 
 	while(funcao != 'F' && quantRegistros < N * N){
@@ -189,6 +211,10 @@ int main(void){
 
 					sudokuJogo[linha][coluna] = valor;
 					quantRegistros++;
+
+					jogada = criarJogada(linha, coluna, valor);
+
+					empilhar(jogadas, jogada);
 
 					printf("EFETUADA\n");
 
@@ -218,6 +244,21 @@ int main(void){
 			case 'V': imprimirSudokuJogo(); break;
 
 			case 'F': printf("FIM DE JOGO\n"); break;
+
+			case 'R':
+
+				jogada = (Jogada*) desempilhar(jogadas);
+
+				if(jogada != NULL){
+
+					sudokuJogo[jogada -> linha][jogada -> coluna] = 0;
+					quantRegistros--;
+
+					printf("JOGADA (%d, %d, %d) DESFEITA\n", jogada -> linha + 1, jogada -> coluna + 1, jogada -> valor);
+
+				}else printf("NAO HA JOGADAS PARA RETROCEDER\n");
+
+			break;
 
 			default: printf("OPCAO INVALIDA\n");
 

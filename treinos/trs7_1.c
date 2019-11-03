@@ -1,19 +1,19 @@
 // Enunciado
 // Consumo do restaurante - maior
-// Em uma  sequência S registrou-se a quantidade de consumo de produtos em um restaurante.
-// Em uma outra sequência R registrou-se o valor de cada produto. Escreva um programa que
+// Em uma  sequência S registrou-se a quantidade de gasto de produtos em um restaurante.
+// Em uma outra sequência R registrou-se o preco de cada produto. Escreva um programa que
 // leia S e R, armazene as suas informações em vetores e indique qual o produto gerou o
-// maior lucro para o restaurante. As posições dos produtos nas sequências S e R,
+// maior gasto para o restaurante. As posições dos produtos nas sequências S e R,
 // são os seus identificadores.
 // Lembre-se que O número 0 como índice do vetor deve indicar o produto 1,
 // assim como, o índice 3 indica o produto 4.
 // Mostre ao final da execução do programa o número correspondente ao produto que gerou o
-// maior lucro (consumo * valor) no restaurante, por exemplo, se a MAIOR valor total foi
+// maior gasto (gasto * preco) no restaurante, por exemplo, se a MAIOR preco total foi
 // do produto 0 o resultado deve ser 1, se foi 20 deverá ser 21.
 // Dicas
 // Lembre-se que o número usado para representar o produto é o índice do vetor
 // acrescido de UMA unidade.
-// É possível que haja mais de um produto na condição de MAIOR gerador de lucro,
+// É possível que haja mais de um produto na condição de MAIOR gerador de gasto,
 // e portanto todos eles devem ser impressos como saida do programa;
 // Exemplos (não exaustivos):
 // Consumo por produto S: 10 20 30 40 50 60 70 80 90 100 110 120 -1
@@ -31,89 +31,91 @@
 
 typedef struct{
 
-	int tam;
-	int ocup;
-	void** agreg;
+	int consumo;
+	int preco;
+	int valor;
 
-} Array;
+} Gasto;
 
-Array* criarArray(int tam){
+typedef struct{
 
-	Array* array = (Array*) malloc(sizeof(Array));
+	int capacidade;
+	int ocupacao;
+	Gasto* armazenador;
 
-	if(tam != '\0') array -> tam = tam; else array -> tam = 1;
+} Vetor;
 
-	array -> ocup = 0;
-	array -> agreg = malloc(tam * sizeof(void*));
+Vetor criarVetor(int capacidade){
 
-	return array;
+	if(capacidade < 1) exit(0);
+
+	Vetor vetor;
+
+	vetor.capacidade = capacidade;
+	vetor.ocupacao = 0;
+	vetor.armazenador = malloc(capacidade * sizeof(Gasto));
+
+	return vetor;
 
 }
 
-void inserirArray(Array* array, void* elem){
+void inserirVetor(Vetor vetor, Gasto gasto){
 
-	if(array -> tam == array -> ocup){
+	if(vetor.capacidade == vetor.ocupacao){
 
-		array -> tam *= 2;
-		array -> agreg = realloc(array -> agreg, array -> tam * sizeof(void*));
+		vetor.capacidade *= 2;
+		vetor.armazenador = realloc(vetor.armazenador, vetor.capacidade * sizeof(Gasto));
 
 	}
 
-	array -> agreg[array -> ocup] = elem;
-	array -> ocup++;
+	vetor.armazenador[vetor.ocupacao] = gasto;
+	vetor.ocupacao++;
 
 }
 
-void* acessarArray(Array* array, int pos){
+Gasto acessarVetor(Vetor vetor, int indice){
 
-	if(pos < 0 || pos > array -> ocup) exit(0);
+	if(indice < 0 || indice > vetor.ocupacao) exit(0);
 
-	return array -> agreg[pos];
+	return vetor.armazenador[indice];
 
 }
 
 int main(void){
 
-	Array* consumos = criarArray('\0');
+	Vetor gastos = criarVetor(1);
 
-	int cont;
-	int* consumo = (int*) malloc(sizeof(int));
+	Gasto gasto; scanf("%d", &gasto.consumo);
 
-	scanf("%d", consumo);
+	while(gasto.consumo >= 0){
 
-	while(*consumo >= 0){
+		scanf("%lf", &gasto.preco);
 
-		inserirArray(consumos, consumo);
+		inserirVetor(gastos, gasto);
 
-		consumo = (int*) malloc(sizeof(int));
-
-		scanf("%d", consumo);
+		scanf("%d", &gasto.consumo);
 
 	}
 
-	free(consumo);
+	int cont; double mvalor = 0.0;
 
-	double lucro, mlucro = 0, precos[consumos -> ocup];
+	for(cont = 0; cont < gastos.ocupacao; cont++){
 
-	for(cont = 0; cont < consumos -> ocup; cont++){
+		Gasto gasto = acessarVetor(gastos, cont);
 
-		consumo = acessarArray(consumos, cont);
+		scanf("%lf", &gasto.preco);
 
-		scanf("%lf", &precos[cont]);
+		gasto.valor = gasto.consumo * gasto.preco;
 
-		lucro = *consumo * precos[cont];
-
-		if(lucro > mlucro) mlucro = lucro;
+		if(gasto.valor > mvalor) mvalor = gasto.valor;
 
 	}
 
-	for(cont = 0; cont < consumos -> ocup; cont++){
+	for(cont = 0; cont < gastos.ocupacao; cont++){
 
-		consumo = acessarArray(consumos, cont);
+		Gasto gasto = acessarVetor(gastos, cont);
 
-		lucro = *consumo * precos[cont];
-
-		if(lucro == mlucro) printf("%d\n", cont + 1);
+		if(gasto.valor == mvalor) printf("%d\n", cont + 1);
 
 	}
 
